@@ -23,6 +23,8 @@ dependencies:
 
   google_fonts: ^1.1.2
 
+  intl: ^0.17.0
+
   hive: ^1.4.4+1
 
   let_log: ^1.1.4
