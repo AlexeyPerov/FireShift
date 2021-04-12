@@ -1,0 +1,39 @@
+name: fireshift
+description: A new Flutter application.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  firebase_core: "0.5.3"
+  cloud_firestore: 0.14.4
+
+  async_redux: ^6.0.3
+
+  darq: ^0.4.0+1
+
+  get_it: ^5.0.3
+
+  google_fonts: ^1.1.2
+
+  hive: ^1.4.4+1
+
+  let_log: ^1.1.4
+
+  cupertino_icons: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
