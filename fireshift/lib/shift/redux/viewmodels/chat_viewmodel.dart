@@ -29,10 +29,10 @@ class ChatViewModel extends BaseModel<ChatState> {
   ChatViewModel fromStore() => ChatViewModel.build(
       onLoad: () => dispatch(LoadContentsAction()),
       onAddMessage: (ticketId, message) async => dispatchFuture(
-          AddMessageAction(ticketId: ticketId, message: message)),
-      onStar: (id, archive) => dispatch(StarAction(ticketId: id, star: archive)),
+          AddMessageAction(threadId: ticketId, message: message)),
+      onStar: (id, archive) => dispatch(StarAction(threadId: id, star: archive)),
       onMarkRead: (id, archive) =>
-          dispatch(MarkReadAction(ticketId: id, read: archive)),
+          dispatch(MarkReadAction(threadId: id, read: archive)),
       onArchive: (id, archive) =>
-          dispatch(ArchiveAction(ticketId: id, archive: archive)));
+          dispatch(ArchiveAction(threadId: id, archive: archive)));
 }

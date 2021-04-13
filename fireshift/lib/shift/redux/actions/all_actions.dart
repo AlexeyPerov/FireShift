@@ -1,5 +1,7 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/redux/chat_state_store.dart';
+import 'package:fireshift/shift/redux/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -11,129 +13,102 @@ class LoadFilterAction extends ReduxAction<DashboardState> {
   @override
   Future<DashboardState> reduce() async {
     var repository = getIt<SupportRepository>();
-    var projects = await repository.fetchProjects();
-    var selectedProject = projects[0];
-    var tickets = await repository.fetchAllTickets(selectedProject.id);
-
-    var filter = TicketFilter(
-        project: selectedProject,
-        filter: TicketFilterType.all,
-        tickets: tickets);
-    return state.copy(projects: projects, ticketFilter: filter);
+    var filter = Filter(project: "");
+    var threads = await repository.fetchThreadsInfo(filter);
+    return state.copy(
+        threads: FilteredThreads(filter: filter, threads: threads));
   }
 }
 
 class FilterAction extends ReduxAction<DashboardState> {
-  final String projectId;
-  final TicketFilterType filterType;
+  final Filter filter;
 
-  FilterAction({@required this.projectId, @required this.filterType});
-
-  @override
-  Future<AppState> reduce() async {
-    var repository = getIt<SupportRepository>();
-    List<TicketInfo> tickets;
-
-    if (filterType == TicketFilterType.unread)
-      tickets = await repository.fetchUnreadTickets(projectId);
-    else if (filterType == TicketFilterType.trash)
-      tickets = await repository.fetchArchivedTickets(projectId);
-    else
-      tickets = await repository.fetchAllTickets(projectId);
-
-    var filter = TicketFilter(
-        project: state.projects.firstWhere((x) => x.id == projectId),
-        filter: filterType,
-        tickets: tickets);
-    return state.copy(ticketFilter: filter);
-  }
-}
-
-class LoadContentsAction extends ReduxAction<ChatState> {
-  LoadContentsAction();
+  FilterAction({@required this.filter});
 
   @override
   Future<DashboardState> reduce() async {
     var repository = getIt<SupportRepository>();
-    var projects = await repository.fetchProjects();
-    var selectedProject = projects[0];
-    var tickets = await repository.fetchAllTickets(selectedProject.id);
+    var threads = await repository.fetchThreadsInfo(filter);
+    return state.copy(
+        threads: FilteredThreads(filter: filter, threads: threads));
+  }
+}
 
-    var filter = TicketFilter(
-        project: selectedProject,
-        filter: TicketFilterType.all,
-        tickets: tickets);
-    return state.copy(projects: projects, ticketFilter: filter);
+class LoadContentsAction extends ReduxAction<ChatState> {
+  final String threadId;
+
+  LoadContentsAction({@required this.threadId});
+
+  @override
+  Future<ChatState> reduce() async {
+    var repository = getIt<SupportRepository>();
+    var thread = await repository.fetchThread(threadId);
+    return state.copy(thread: thread);
   }
 }
 
 class AddMessageAction extends ReduxAction<ChatState> {
-  final String ticketId;
-  final TicketMessage message;
+  final String threadId;
+  final SupportMessage message;
 
-  AddMessageAction({@required this.ticketId, @required this.message});
+  AddMessageAction({@required this.threadId, @required this.message});
 
   @override
-  Future<AppState> reduce() async {
+  Future<ChatState> reduce() async {
     var repository = getIt<SupportRepository>();
 
-    var ticket = await repository.addMessageToTicket(
-        ticketId, message.authorId, message.contents);
+    var thread = await repository.addThreadMessage(
+        threadId, message.authorId, message.contents);
 
-    return state.copy(selectedTicket: ticket);
+    return state.copy(thread: thread);
   }
 }
 
 class ArchiveAction extends ReduxAction<ChatState> {
-  final String ticketId;
+  final String threadId;
   final bool archive;
 
-  ArchiveAction({@required this.ticketId, @required this.archive});
+  ArchiveAction({@required this.threadId, @required this.archive});
 
   @override
-  Future<AppState> reduce() async {
+  Future<ChatState> reduce() async {
     var repository = getIt<SupportRepository>();
-
-    var newTicketInfo = await repository.archiveTicket(ticketId, archive);
-
-    return updateStateWith(ticketId, state, newTicketInfo);
+    var newThreadInfo = await repository.archive(threadId, archive);
+    return state.copy(thread: state.thread.copy(info: newThreadInfo));
   }
 }
 
 class StarAction extends ReduxAction<ChatState> {
-  final String ticketId;
+  final String threadId;
   final bool star;
 
-  StarAction({@required this.ticketId, @required this.star});
+  StarAction({@required this.threadId, @required this.star});
 
   @override
-  Future<AppState> reduce() async {
+  Future<ChatState> reduce() async {
     var repository = getIt<SupportRepository>();
-
-    var newTicketInfo = await repository.starTicket(ticketId, star);
-
-    return updateStateWith(ticketId, state, newTicketInfo);
+    var newThreadInfo = await repository.star(threadId, star);
+    return state.copy(thread: state.thread.copy(info: newThreadInfo));
   }
 }
 
 class MarkReadAction extends ReduxAction<ChatState> {
-  final String ticketId;
+  final String threadId;
   final bool read;
 
-  MarkReadAction({@required this.ticketId, @required this.read});
+  MarkReadAction({@required this.threadId, @required this.read});
 
   @override
-  Future<AppState> reduce() async {
+  Future<ChatState> reduce() async {
     var repository = getIt<SupportRepository>();
-
-    var newTicketInfo = await repository.markTicketRead(ticketId, read);
-
-    return updateStateWith(ticketId, state, newTicketInfo);
+    var newThreadInfo = await repository.markRead(threadId, read);
+    return state.copy(thread: state.thread.copy(info: newThreadInfo));
   }
 }
 
-AppState updateStateWith(
-    String ticketId, AppState state, TicketInfo newTicketInfo) {
+// TODO use for shortcut commands in DashboardState
+/*ChatState updateStateWith(
+    String threadId, ChatState state, SupportThreadInfo newThreadInfo) {
   var listIndex =
   state.ticketFilter.tickets.indexWhere((ticket) => ticket.id == ticketId);
 
@@ -155,4 +130,4 @@ AppState updateStateWith(
   newTickets != null ? state.ticketFilter.copy(tickets: newTickets) : null;
 
   return state.copy(ticketFilter: newFilter, selectedTicket: newSelectedTicket);
-}
+}*/

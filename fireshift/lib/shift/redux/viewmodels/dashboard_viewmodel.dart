@@ -11,17 +11,15 @@ class DashboardViewModel extends BaseModel<DashboardState> {
   FilteredThreads threads;
 
   VoidCallback onLoad;
-  Function(String, Filter) onFilter;
+  Function(Filter) onFilter;
 
   DashboardViewModel.build(
-      {@required this.threads,
-        @required this.onLoad,
-        @required this.onFilter})
+      {@required this.threads, @required this.onLoad, @required this.onFilter})
       : super(equals: [threads]);
 
   @override
   DashboardViewModel fromStore() => DashboardViewModel.build(
+      threads: state.threads,
       onLoad: () => dispatch(LoadFilterAction()),
-      onFilter: (projectId, filterType) =>
-          dispatch(FilterAction(projectId: projectId, filterType: filterType)));
+      onFilter: (filter) => dispatch(FilterAction(filter: filter)));
 }

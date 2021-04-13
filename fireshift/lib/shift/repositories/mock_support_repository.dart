@@ -75,9 +75,9 @@ class MockSupportRepository extends SupportRepository {
   }
 
   @override
-  Future<SupportThreadContents> fetchThreadContents(String ticketId) {
+  Future<SupportThread> fetchThread(String ticketId) {
     var ticket = threads.firstWhere((x) => x.info.id == ticketId);
-    return Future.value(ticket.contents);
+    return Future.value(ticket);
   }
 
   @override

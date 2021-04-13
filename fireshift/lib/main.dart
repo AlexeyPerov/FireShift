@@ -1,10 +1,10 @@
-import 'package:async_redux/async_redux.dart';
 import 'package:fireshift/platform/utilities/routing.dart';
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/app/options/app_options.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/app/theme/themes.dart';
 import 'package:fireshift/shift/screens/auth/auth_screen.dart';
+import 'package:fireshift/shift/screens/dashboard/dashboard_screen.dart';
 import 'package:fireshift/shift/screens/error/error_screen.dart';
 import 'package:fireshift/shift/screens/splash/splash_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -23,22 +23,20 @@ class AppWidget extends StatelessWidget {
   AppWidget() : _appInitialization = App.initializeApp();
 
   @override
-  Widget build(BuildContext context) => StoreProvider<AppState>(
-      store: store,
-      child: ModelBinding(
-        initialModel: AppOptions(
-          themeMode: ThemeMode.system,
-          textScaleFactor: systemTextScaleFactorOption,
-          timeDilation: timeDilation,
-          platform: defaultTargetPlatform,
-          isTestMode: false,
-        ),
-        child: Builder(
-          builder: (context) {
-            return _createApp(context);
-          },
-        ),
-      ));
+  Widget build(BuildContext context) => ModelBinding(
+    initialModel: AppOptions(
+      themeMode: ThemeMode.system,
+      textScaleFactor: systemTextScaleFactorOption,
+      timeDilation: timeDilation,
+      platform: defaultTargetPlatform,
+      isTestMode: false,
+    ),
+    child: Builder(
+      builder: (context) {
+        return _createApp(context);
+      },
+    ),
+  );
 
   MaterialApp _createApp(BuildContext context) {
     return MaterialApp(
@@ -88,7 +86,7 @@ class AppWidget extends StatelessWidget {
 
     return MaterialPageRoute(
       builder: (context) => _redirectOnAppInit(
-              () => kReleaseMode ? AuthScreen() : NotesConnector()),
+              () => kReleaseMode ? AuthScreen() : DashboardScreen()),
     );
   }
 }
