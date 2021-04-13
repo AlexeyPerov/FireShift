@@ -8,18 +8,18 @@ import '../dashboard_state_store.dart';
 class DashboardViewModel extends BaseModel<DashboardState> {
   DashboardViewModel();
 
-  FilteredThreads threads;
+  FilteredThreads filteredThreads;
 
   VoidCallback onLoad;
   Function(Filter) onFilter;
 
   DashboardViewModel.build(
-      {@required this.threads, @required this.onLoad, @required this.onFilter})
-      : super(equals: [threads]);
+      {@required this.filteredThreads, @required this.onLoad, @required this.onFilter})
+      : super(equals: [filteredThreads]);
 
   @override
   DashboardViewModel fromStore() => DashboardViewModel.build(
-      threads: state.threads,
+      filteredThreads: state.threads,
       onLoad: () => dispatch(LoadFilterAction()),
       onFilter: (filter) => dispatch(FilterAction(filter: filter)));
 }

@@ -101,6 +101,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _navigateToNotes(BuildContext context) {
     NavigatorUtilities.pushAndRemoveUntil(
-        context, (context) => DashboardScreen());
+        context, (context) => DashboardConnector());
   }
 }

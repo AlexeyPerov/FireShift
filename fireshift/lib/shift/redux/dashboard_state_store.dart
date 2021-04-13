@@ -1,9 +1,14 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:fireshift/shift/redux/chat_state_store.dart';
 
 import 'entities/support_thread.dart';
 
-var store = Store<DashboardState>(
+var dashboardStore = Store<DashboardState>(
   initialState: DashboardState.initialState(),
+);
+
+var chatStore = Store<ChatState>(
+  initialState: ChatState.initialState(),
 );
 
 class DashboardState {

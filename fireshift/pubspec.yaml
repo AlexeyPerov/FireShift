@@ -12,9 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: "0.5.3"
-  cloud_firestore: 0.14.4
-
   async_redux: ^6.0.3
 
   darq: ^0.4.0+1

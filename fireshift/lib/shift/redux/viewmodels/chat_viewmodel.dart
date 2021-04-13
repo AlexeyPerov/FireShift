@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 import '../chat_state_store.dart';
 
 class ChatViewModel extends BaseModel<ChatState> {
-  ChatViewModel();
+  final String threadId;
+
+  ChatViewModel({@required this.threadId});
 
   SupportThread thread;
 
@@ -17,20 +19,24 @@ class ChatViewModel extends BaseModel<ChatState> {
   Function(String, bool) onArchive;
 
   ChatViewModel.build(
-      {@required this.thread,
-        @required this.onLoad,
-        @required this.onAddMessage,
-        @required this.onStar,
-        @required this.onMarkRead,
-        @required this.onArchive})
+      {@required this.threadId,
+      @required this.thread,
+      @required this.onLoad,
+      @required this.onAddMessage,
+      @required this.onStar,
+      @required this.onMarkRead,
+      @required this.onArchive})
       : super(equals: [thread]);
 
   @override
   ChatViewModel fromStore() => ChatViewModel.build(
-      onLoad: () => dispatch(LoadContentsAction()),
+      threadId: threadId,
+      thread: state.thread,
+      onLoad: () => dispatch(LoadContentsAction(threadId: threadId)),
       onAddMessage: (ticketId, message) async => dispatchFuture(
           AddMessageAction(threadId: ticketId, message: message)),
-      onStar: (id, archive) => dispatch(StarAction(threadId: id, star: archive)),
+      onStar: (id, archive) =>
+          dispatch(StarAction(threadId: id, star: archive)),
       onMarkRead: (id, archive) =>
           dispatch(MarkReadAction(threadId: id, read: archive)),
       onArchive: (id, archive) =>
