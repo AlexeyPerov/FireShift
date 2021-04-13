@@ -81,11 +81,12 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      // TODO restore
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToChatScreen(context, ""),
         backgroundColor: Color(0xFF757575),
         child: Icon(Icons.add),
-      ),
+      ),*/
     );
   }
 

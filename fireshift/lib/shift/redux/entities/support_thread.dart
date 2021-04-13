@@ -62,7 +62,7 @@ class SupportThreadInfo {
   final bool unread;
   final bool archived;
   final String subject;
-  final String updateTime;
+  final DateTime updateTime;
   final String preview;
   final String contentsId;
 }

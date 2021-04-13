@@ -1,3 +1,4 @@
+import 'package:fireshift/platform/utilities/formatters.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/redux/entities/support_thread.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class SupportThreadInfoCard extends StatelessWidget {
           child: InkWell(
             onTap: () => onNavigateToChatScreen(context, threadInfo.id),
             child: Container(
-              height: 120,
+              height: 135,
               padding: EdgeInsets.all(25.0),
               child: Column(
                 children: [
@@ -86,7 +87,21 @@ class SupportThreadInfoCard extends StatelessWidget {
                               color: colorScheme.onSurface,
                               decoration: threadInfo.archived
                                   ? TextDecoration.lineThrough
-                                  : TextDecoration.none)))
+                                  : TextDecoration.none))),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(dateFormatter.format(threadInfo.updateTime),
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.headline6
+                              .apply(color: colorScheme.onSurface)),
+                      Text(timeFormatter.format(threadInfo.updateTime),
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.headline6
+                              .apply(color: colorScheme.onSurface)),
+                    ],
+                  ),
                 ],
               ),
             ),

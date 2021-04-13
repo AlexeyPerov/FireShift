@@ -119,7 +119,7 @@ SupportThreadInfo createMockTicketInfo(String projectId, int id) {
       unread: true,
       archived: false,
       subject: 'Support request ' + id.toString(),
-      updateTime: '25.03.' + (2000 + id).toString(),
+      updateTime: DateTime.now(),
       contentsId: "contents_" + id.toString(),
       preview: 'Excepteur sint occaecat cupidatat non proident');
 }
