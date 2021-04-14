@@ -57,12 +57,12 @@ class DashboardScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 140,
+                      height: 40,
                       // TODO put filters here
                     ),
                     SizedBox(height: 10),
                     Container(
-                      height: height - 150,
+                      height: height - 50,
                       child: ListView.builder(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(8.0),

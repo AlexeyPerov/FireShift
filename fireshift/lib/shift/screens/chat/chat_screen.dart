@@ -48,20 +48,14 @@ class _ChatScreenState extends State<ChatScreen> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                tooltip: "Post",
-                onPressed: () async => {postPressed()},
-              )),
-        ],
-      ),
+          leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.of(context).pop(),
+      )),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () async => {postPressed()},
+          backgroundColor: Color(0xFF757575),
+          child: Icon(Icons.send)),
       body: Stack(children: <Widget>[
         Align(
           alignment: Alignment.center,
