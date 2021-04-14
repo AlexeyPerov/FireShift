@@ -82,7 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
       icon: const Icon(Icons.login),
       tooltip: "Login",
       onPressed: () => {
-        if (_loginController.text == "moscow")
+        if (_loginController.text == "pass")
           {_navigateToNotes(context)}
         else
           {_navigateToErrorScreen(context)}
