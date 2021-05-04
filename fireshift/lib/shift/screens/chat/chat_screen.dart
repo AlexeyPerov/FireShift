@@ -41,7 +41,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _contents = '';
+  TextEditingController _newMessageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _newMessageController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 : constraints.maxHeight;
 
             var messages = widget.viewModel.thread.contents.messages;
+            var messagesCount = messages != null ? messages.length : 0; // TODO can be null?
 
             return Container(
               height: height,
@@ -79,9 +86,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           padding: const EdgeInsets.all(8.0),
-                          itemCount: messages != null ? messages.length : 0,
+                          itemCount: messagesCount,
                           itemBuilder: (BuildContext context, int index) {
-                            final message = messages[index];
+                            final message = messages[messagesCount - index - 1];
                             return SupportMessageCard(message: message);
                           }),
                     ),
@@ -90,16 +97,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       key: _formKey,
                       child: Container(
                         height: 140,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              maxLines: 3,
-                              keyboardType: TextInputType.text,
-                              autofocus: true,
-                              onSaved: (value) => _contents = value,
-                              initialValue: "",
-                            )
-                          ],
+                        child: TextFormField(
+                          controller: _newMessageController,
+                          validator: _validateNonEmpty,
+                          maxLines: 3,
+                          keyboardType: TextInputType.multiline,
+                          autofocus: true
                         ),
                       ),
                     ),
@@ -118,8 +121,17 @@ class _ChatScreenState extends State<ChatScreen> {
       widget.viewModel.onAddMessage(
           widget.viewModel.threadId,
           SupportMessage(
-              authorId: "0", contents: _contents, time: DateTime.now()));
+              authorId: "0", contents: _newMessageController.text, time: DateTime.now()));
+
+      _newMessageController.text = "";
     }
+  }
+
+  static String _validateNonEmpty(String value) {
+    if (value.isEmpty) {
+      return 'Message cannot be empty';
+    }
+    return null;
   }
 
   bool _validateAndSave() {
