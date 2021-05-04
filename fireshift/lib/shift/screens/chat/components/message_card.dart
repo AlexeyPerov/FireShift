@@ -26,42 +26,43 @@ class SupportMessageCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: InkWell(
           splashColor: Colors.blue,
-          onTap: () => null, // TODO implement something like copy to clipboard
+          onTap: () => null, // TODO implement something like copy to clipboard or popup with details
           child: Container(
-            height: 150,
             padding: EdgeInsets.all(25.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(message.contents,
-                        style: textTheme.bodyText2
-                            .apply(color: colorScheme.onSurface)),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: ConditionalWidget(
-                        condition: message.authorId != "0",
-                        child: Text("User " + message.authorId,
-                            style: textTheme.subtitle1
-                                .apply(color: colorScheme.onSurface)),
-                      ),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(message.contents,
+                          style: textTheme.bodyText2
+                              .apply(color: colorScheme.onSurface)),
                     ),
-                    Text(dateFormatter.format(message.time),
-                        style: textTheme.subtitle1
-                            .apply(color: colorScheme.onSurface)),
-                    SizedBox(width: 10),
-                    Text(timeFormatter.format(message.time),
-                        style: textTheme.subtitle1
-                            .apply(color: colorScheme.onSurface)),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: ConditionalWidget(
+                          condition: message.authorId != "0",
+                          child: Text("User " + message.authorId,
+                              style: textTheme.subtitle1
+                                  .apply(color: colorScheme.onSurface)),
+                        ),
+                      ),
+                      Text(dateFormatter.format(message.time),
+                          style: textTheme.subtitle1
+                              .apply(color: colorScheme.onSurface)),
+                      SizedBox(width: 10),
+                      Text(timeFormatter.format(message.time),
+                          style: textTheme.subtitle1
+                              .apply(color: colorScheme.onSurface)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
