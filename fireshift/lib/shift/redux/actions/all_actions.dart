@@ -12,9 +12,9 @@ class LoadFilterAction extends ReduxAction<DashboardState> {
 
   @override
   Future<DashboardState> reduce() async {
-    var repository = getIt<SupportRepository>();
+    //var repository = getIt<SupportRepository>();
     var filter = Filter(project: "");
-    var threads = await repository.fetchThreadsInfo(filter);
+    var threads = List<SupportThreadInfo>.empty(); // TODO await repository.fetchThreadsInfo(filter);
     return state.copy(
         threads: FilteredThreads(filter: filter, threads: threads));
   }

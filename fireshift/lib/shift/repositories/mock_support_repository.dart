@@ -3,36 +3,20 @@ import 'package:fireshift/shift/redux/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 
 class MockSupportRepository extends SupportRepository {
-  List<SupportThread> threads = [
-    SupportThread(
-        info: createMockTicketInfo("0", 0),
-        contents: createMockTicketContents(0)),
-    SupportThread(
-        info: createMockTicketInfo("0", 1),
-        contents: createMockTicketContents(1)),
-    SupportThread(
-        info: createMockTicketInfo("0", 2),
-        contents: createMockTicketContents(2)),
-    SupportThread(
-        info: createMockTicketInfo("0", 3),
-        contents: createMockTicketContents(3)),
-    SupportThread(
-        info: createMockTicketInfo("1", 4),
-        contents: createMockTicketContents(4)),
-    SupportThread(
-        info: createMockTicketInfo("1", 5),
-        contents: createMockTicketContents(5)),
-    SupportThread(
-        info: createMockTicketInfo("1", 6),
-        contents: createMockTicketContents(6)),
-    SupportThread(
-        info: createMockTicketInfo("2", 7),
-        contents: createMockTicketContents(7))
-  ];
+  List<SupportThread> threads = List<SupportThread>.empty(growable: true);
 
   @override
   Future initialize() async {
     await milliseconds(400);
+
+    const int threadsCount = 55;
+    for (var i = 0; i < threadsCount; i++) {
+      threads.add(
+          SupportThread(
+              info: createMockTicketInfo(i.toString(), i),
+              contents: createMockTicketContents(i))
+      );
+    }
   }
 
   @override
@@ -73,8 +57,14 @@ class MockSupportRepository extends SupportRepository {
     var projectTickets = threads
         .where((ticket) => ticket.info.project.contains(filter.project))
         .map((e) => e.info)
-        .toList();
-    return Future.value(projectTickets);
+        .toList(growable: false);
+
+    var start = filter.pageStart.clamp(0, projectTickets.length);
+    var end = (start + filter.pageSize).clamp(0, projectTickets.length);
+
+    var tickets = projectTickets.getRange(start, end).toList(growable: false);
+
+    return Future.value(tickets);
   }
 
   @override
@@ -132,7 +122,7 @@ SupportThreadContents createMockTicketContents(int id) {
     SupportMessage(authorId: "0", contents: "hello", time: DateTime.now()),
     SupportMessage(
         authorId: "1",
-        contents: 'Excepteur sint occaecat cupidatat non proident.\n'
+        contents: 'Excepteur sint occaecat cupidatat $id non proident.\n'
             'sunt in culpa qui officia deserunt mollit anim id est laborum'
             'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
         time: DateTime.now()),

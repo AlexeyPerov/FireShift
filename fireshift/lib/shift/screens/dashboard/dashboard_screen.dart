@@ -4,10 +4,10 @@ import 'package:async_redux/async_redux.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/redux/dashboard_state_store.dart';
 import 'package:fireshift/shift/redux/viewmodels/dashboard_viewmodel.dart';
-import 'package:fireshift/shift/screens/chat/chat_screen.dart';
-import 'package:fireshift/shift/screens/dashboard/components/thread_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'components/thread_paged_list.dart';
 
 class DashboardConnector extends StatelessWidget {
   DashboardConnector({Key key}) : super(key: key);
@@ -42,11 +42,6 @@ class DashboardScreen extends StatelessWidget {
             alignment: Alignment.center,
             child: new LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              if (viewModel.filteredThreads == null ||
-                  viewModel.filteredThreads.threads.isEmpty) {
-                return Container();
-              }
-
               var height = constraints.hasInfiniteHeight
                   ? MediaQuery.of(context).size.height
                   : constraints.maxHeight;
@@ -62,18 +57,8 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Container(
-                      height: height - 50,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.all(8.0),
-                          itemCount: viewModel.filteredThreads.threads.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return SupportThreadInfoCard(
-                                threadInfo:
-                                    viewModel.filteredThreads.threads[index],
-                                onNavigateToChatScreen: _navigateToChatScreen);
-                          }),
-                    ),
+                        height: height - 50,
+                        child: ThreadPagedList(viewModel: viewModel)),
                   ],
                 ),
               );
@@ -87,15 +72,6 @@ class DashboardScreen extends StatelessWidget {
         backgroundColor: Color(0xFF757575),
         child: Icon(Icons.add),
       ),*/
-    );
-  }
-
-  void _navigateToChatScreen(BuildContext context, String threadId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatConnector(threadId: threadId),
-      ),
     );
   }
 }
