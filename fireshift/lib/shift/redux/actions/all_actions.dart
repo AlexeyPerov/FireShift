@@ -1,3 +1,4 @@
+/*
 import 'package:async_redux/async_redux.dart';
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/redux/chat_state_store.dart';
@@ -105,8 +106,8 @@ class MarkReadAction extends ReduxAction<ChatState> {
     return state.copy(thread: state.thread.copy(info: newThreadInfo));
   }
 }
+*/
 
-// TODO use for shortcut commands in DashboardState
 /*ChatState updateStateWith(
     String threadId, ChatState state, SupportThreadInfo newThreadInfo) {
   var listIndex =

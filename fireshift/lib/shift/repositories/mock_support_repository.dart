@@ -11,11 +11,9 @@ class MockSupportRepository extends SupportRepository {
 
     const int threadsCount = 55;
     for (var i = 0; i < threadsCount; i++) {
-      threads.add(
-          SupportThread(
-              info: createMockTicketInfo(i.toString(), i),
-              contents: createMockTicketContents(i))
-      );
+      threads.add(SupportThread(
+          info: createMockTicketInfo(i.toString(), i),
+          contents: createMockTicketContents(i)));
     }
   }
 
@@ -53,14 +51,15 @@ class MockSupportRepository extends SupportRepository {
   }
 
   @override
-  Future<List<SupportThreadInfo>> fetchThreadsInfo(Filter filter) {
+  Future<List<SupportThreadInfo>> fetchThreadsInfo(
+      Filter filter, PageTarget pageTarget) {
     var projectTickets = threads
         .where((ticket) => ticket.info.project.contains(filter.project))
         .map((e) => e.info)
         .toList(growable: false);
 
-    var start = filter.pageStart.clamp(0, projectTickets.length);
-    var end = (start + filter.pageSize).clamp(0, projectTickets.length);
+    var start = pageTarget.pageStart.clamp(0, projectTickets.length);
+    var end = (start + pageTarget.pageSize).clamp(0, projectTickets.length);
 
     var tickets = projectTickets.getRange(start, end).toList(growable: false);
 

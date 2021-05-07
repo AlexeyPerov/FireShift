@@ -4,7 +4,7 @@ import 'package:fireshift/shift/redux/entities/support_thread.dart';
 abstract class SupportRepository {
   Future initialize();
 
-  Future<List<SupportThreadInfo>> fetchThreadsInfo(Filter filter);
+  Future<List<SupportThreadInfo>> fetchThreadsInfo(Filter filter, PageTarget pageTarget);
   Future<SupportThread> fetchThread(String id);
   Future<SupportThread> addThreadMessage(String id, String senderId, String response);
   Future<SupportThreadInfo> markRead(String id, bool read);

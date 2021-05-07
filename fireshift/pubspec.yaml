@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  async_redux: ^6.0.3
+  flutter_bloc: ^6.1.1
 
   infinite_scroll_pagination: ^3.0.1
 
@@ -26,7 +26,11 @@ dependencies:
 
   hive: ^1.4.4+1
 
-  let_log: ^1.1.4
+  rxdart: ^0.26.0
+
+  equatable: ^1.2.5
+
+  logger: ^0.9.4
 
   cupertino_icons: ^1.0.1
 

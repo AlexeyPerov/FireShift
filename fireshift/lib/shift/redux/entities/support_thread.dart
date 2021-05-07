@@ -112,11 +112,16 @@ class SupportThread {
 }
 
 class Filter {
-  final int pageStart;
-  final int pageSize;
   final String project;
 
-  Filter({this.pageStart, this.pageSize, this.project});
+  Filter({this.project});
+}
+
+class PageTarget {
+  final int pageStart;
+  final int pageSize;
+
+  PageTarget({this.pageStart, this.pageSize});
 }
 
 @immutable
