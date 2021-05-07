@@ -1,54 +1,45 @@
-import 'package:fireshift/shift/app/app.dart';
+import 'dart:async';
+
+import 'package:fireshift/shift/bloc/dashboard/dashboard.dart';
 import 'package:fireshift/shift/bloc/entities/support_thread.dart';
-import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:fireshift/shift/screens/chat/chat_screen.dart';
 import 'package:fireshift/shift/screens/dashboard/components/thread_card.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ThreadPagedList extends StatefulWidget {
-  final DashboardViewModel viewModel;
-
-  const ThreadPagedList({Key key, this.viewModel}) : super(key: key);
+  const ThreadPagedList({Key key}) : super(key: key);
 
   @override
   _ThreadPagedListState createState() => _ThreadPagedListState();
 }
 
 class _ThreadPagedListState extends State<ThreadPagedList> {
-  static const _pageSize = 10;
-
+  final DashboardBloc _bloc = DashboardBloc();
   final PagingController<int, SupportThreadInfo> _pagingController =
       PagingController(firstPageKey: 0);
+  StreamSubscription _blocSubscription;
 
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+      _bloc.onPageRequestSink.add(pageKey);
     });
+
+    // We could've used StreamBuilder, but that would unnecessarily recreate
+    // the entire widget every time the state changes.
+    // Instead, handling the subscription ourselves and updating only the
+    // _pagingController is more efficient.
+    _blocSubscription =
+        _bloc.onNewListingState.listen((listingState) {
+          _pagingController.value = PagingState(
+            nextPageKey: listingState.nextPageKey,
+            error: listingState.error,
+            itemList: listingState.itemList,
+          );
+        });
+
     super.initState();
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      var repository = getIt<SupportRepository>();
-      final newItems = await repository.fetchThreadsInfo(Filter(
-          pageStart: pageKey,
-          pageSize: _pageSize,
-          project:
-              ""));
-      // await widget.viewModel.onFilter
-
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
   }
 
   @override
@@ -73,6 +64,8 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
   @override
   void dispose() {
     _pagingController.dispose();
+    _blocSubscription.cancel();
+    _bloc.dispose();
     super.dispose();
   }
 

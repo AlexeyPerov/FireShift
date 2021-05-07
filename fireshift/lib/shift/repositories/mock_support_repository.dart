@@ -2,6 +2,7 @@ import 'package:fireshift/platform/utilities/future_extensions.dart';
 import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 
+// TODO add fake delays
 class MockSupportRepository extends SupportRepository {
   List<SupportThread> threads = List<SupportThread>.empty(growable: true);
 

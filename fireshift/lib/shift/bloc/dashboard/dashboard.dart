@@ -17,6 +17,7 @@ class DashboardState {
   final int nextPageKey;
 }
 
+// TODO rename to smth like threads list?
 class DashboardBloc {
   DashboardBloc() {
     _onPageRequest.stream

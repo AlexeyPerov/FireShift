@@ -6,27 +6,18 @@ import 'package:flutter/material.dart';
 
 import 'components/thread_paged_list.dart';
 
+// TODO remove?
 class DashboardConnector extends StatelessWidget {
   DashboardConnector({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<DashboardState>(
-      store: dashboardStore,
-      child: StoreConnector<DashboardState, DashboardViewModel>(
-        model: DashboardViewModel(),
-        onInitialBuild: (viewModel) => viewModel.onLoad(),
-        builder: (BuildContext context, DashboardViewModel viewModel) =>
-            DashboardScreen(viewModel: viewModel),
-      ),
-    );
+    return DashboardScreen();
   }
 }
 
 class DashboardScreen extends StatelessWidget {
-  final DashboardViewModel viewModel;
-
-  const DashboardScreen({Key key, this.viewModel}) : super(key: key);
+  const DashboardScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +46,7 @@ class DashboardScreen extends StatelessWidget {
                     SizedBox(height: 10),
                     Container(
                         height: height - 50,
-                        child: ThreadPagedList(viewModel: viewModel)),
+                        child: ThreadPagedList()),
                   ],
                 ),
               );

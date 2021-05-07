@@ -1,10 +1,14 @@
 import 'dart:math';
 
+import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/bloc/entities/support_thread.dart';
+import 'package:fireshift/shift/bloc/thread_chat/thread_chat.dart';
+import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:fireshift/shift/screens/chat/components/message_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatConnector extends StatelessWidget {
   final String threadId;
@@ -13,22 +17,24 @@ class ChatConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<ChatState>(
-      store: chatStore,
-      child: StoreConnector<ChatState, ChatViewModel>(
-        model: ChatViewModel(threadId: threadId),
-        onInitialBuild: (viewModel) => viewModel.onLoad(),
-        builder: (BuildContext context, ChatViewModel viewModel) =>
-            ChatScreen(viewModel: viewModel),
-      ),
-    );
+    return BlocProvider<ThreadChatBloc>(create: (context) {
+      return ThreadChatBloc(supportRepository: getIt<SupportRepository>())
+        ..add(LoadThread(threadId));
+    }, child: BlocBuilder<ThreadChatBloc, ThreadChatState>(
+        builder: (context, ThreadChatState state) {
+      if (state is ThreadChatLoaded) {
+        return ChatScreen(thread: state.thread);
+      } else {
+        return Container(); // TODO loading bar and/or error
+      }
+    }));
   }
 }
 
 class ChatScreen extends StatefulWidget {
-  final ChatViewModel viewModel;
+  final SupportThread thread;
 
-  const ChatScreen({Key key, this.viewModel}) : super(key: key);
+  const ChatScreen({Key key, this.thread}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -55,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
         onPressed: () => Navigator.of(context).pop(),
       )),
       floatingActionButton: FloatingActionButton(
-          onPressed: () async => {postPressed()},
+          onPressed: () async => {postPressed(context)},
           backgroundColor: Color(0xFF757575),
           child: Icon(Icons.send)),
       body: Stack(children: <Widget>[
@@ -67,8 +73,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 ? MediaQuery.of(context).size.height
                 : constraints.maxHeight;
 
-            var messages = widget.viewModel.thread.contents.messages;
-            var messagesCount = messages != null ? messages.length : 0; // TODO can be null?
+            var messages = widget.thread.contents.messages;
+            var messagesCount =
+                messages != null ? messages.length : 0; // TODO can be null?
 
             return Container(
               height: height,
@@ -94,12 +101,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Container(
                         height: 140,
                         child: TextFormField(
-                          controller: _newMessageController,
-                          validator: _validateNonEmpty,
-                          maxLines: 3,
-                          keyboardType: TextInputType.multiline,
-                          autofocus: true
-                        ),
+                            controller: _newMessageController,
+                            validator: _validateNonEmpty,
+                            maxLines: 3,
+                            keyboardType: TextInputType.multiline,
+                            autofocus: true),
                       ),
                     ),
                   ],
@@ -112,12 +118,14 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  postPressed() {
+  postPressed(BuildContext context) {
     if (_validateAndSave()) {
-      widget.viewModel.onAddMessage(
-          widget.viewModel.threadId,
+      BlocProvider.of<ThreadChatBloc>(context).add(AddThreadMessage(
+          widget.thread.info.id,
           SupportMessage(
-              authorId: "0", contents: _newMessageController.text, time: DateTime.now()));
+              authorId: "0",
+              contents: _newMessageController.text,
+              time: DateTime.now())));
 
       _newMessageController.text = "";
     }
