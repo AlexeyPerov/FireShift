@@ -124,6 +124,7 @@ class PageTarget {
   PageTarget({this.pageStart, this.pageSize});
 }
 
+// TODO remove redundant
 @immutable
 class FilteredThreads {
   final Filter filter;

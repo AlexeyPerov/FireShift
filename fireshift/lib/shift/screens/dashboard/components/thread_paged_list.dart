@@ -1,6 +1,5 @@
 import 'package:fireshift/shift/app/app.dart';
-import 'package:fireshift/shift/redux/entities/support_thread.dart';
-import 'package:fireshift/shift/redux/viewmodels/dashboard_viewmodel.dart';
+import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:fireshift/shift/screens/chat/chat_screen.dart';
 import 'package:fireshift/shift/screens/dashboard/components/thread_card.dart';

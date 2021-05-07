@@ -1,6 +1,6 @@
 import 'package:fireshift/platform/utilities/formatters.dart';
 import 'package:fireshift/platform/widgets/conditional_widget.dart';
-import 'package:fireshift/shift/redux/entities/support_thread.dart';
+import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 

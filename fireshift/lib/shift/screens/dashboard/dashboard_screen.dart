@@ -1,9 +1,6 @@
 import 'dart:math';
 
-import 'package:async_redux/async_redux.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
-import 'package:fireshift/shift/redux/dashboard_state_store.dart';
-import 'package:fireshift/shift/redux/viewmodels/dashboard_viewmodel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

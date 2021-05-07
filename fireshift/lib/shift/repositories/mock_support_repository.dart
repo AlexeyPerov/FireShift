@@ -1,5 +1,5 @@
 import 'package:fireshift/platform/utilities/future_extensions.dart';
-import 'package:fireshift/shift/redux/entities/support_thread.dart';
+import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 
 class MockSupportRepository extends SupportRepository {

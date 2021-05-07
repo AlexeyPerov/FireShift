@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fireshift/shift/app/app.dart';
-import 'package:fireshift/shift/redux/entities/support_thread.dart';
+import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fireshift/shift/redux/entities/support_thread.dart';
+import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
