@@ -44,6 +44,10 @@ class SupportThreadInfoCard extends StatelessWidget {
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none)),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(threadInfo.project, style: textTheme.headline6),
+                    ),
                     ConditionalWidget(
                       condition: threadInfo.starred,
                       child: Icon(

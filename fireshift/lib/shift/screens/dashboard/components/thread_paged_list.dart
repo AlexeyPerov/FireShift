@@ -55,8 +55,7 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
               threadInfo:
                   item,
               onNavigateToChatScreen: _navigateToChatScreen),
-        ),
-        separatorBuilder: (context, index) => const Divider(),
+        )
       ),
     );
   }

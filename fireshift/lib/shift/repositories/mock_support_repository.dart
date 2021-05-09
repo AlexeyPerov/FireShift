@@ -13,7 +13,8 @@ class MockSupportRepository extends SupportRepository {
     const int threadsCount = 55;
     for (var i = 0; i < threadsCount; i++) {
       threads.add(SupportThread(
-          info: createMockTicketInfo(i.toString(), i),
+          info:
+              createMockTicketInfo(RandomUtilities.hit(0.1) ? "Dev" : "AoC", i),
           contents: createMockTicketContents(i)));
     }
   }
@@ -130,7 +131,7 @@ SupportThreadInfo createMockTicketInfo(String projectId, int id) {
       subject: 'Support request ' + id.toString(),
       updateTime: DateTime.now(),
       contentsId: "contents_" + id.toString(),
-      preview: 'Excepteur sint occaecat cupidatat non proident');
+      preview: 'Excepteur sint occaecat cupidatat $id non proident');
 }
 
 SupportThreadContents createMockTicketContents(int id) {
