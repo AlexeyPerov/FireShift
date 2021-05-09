@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+const kAdminUserId = "0";
 
 class SupportThreadInfo {
   SupportThreadInfo(
@@ -122,29 +122,4 @@ class PageTarget {
   final int pageSize;
 
   PageTarget({this.pageStart, this.pageSize});
-}
-
-// TODO remove redundant
-@immutable
-class FilteredThreads {
-  final Filter filter;
-  final List<SupportThreadInfo> threads;
-
-  FilteredThreads({this.filter, this.threads});
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is FilteredThreads &&
-              runtimeType == other.runtimeType &&
-              filter == other.filter &&
-              threads == other.threads;
-
-  @override
-  int get hashCode => filter.hashCode ^ threads.hashCode;
-
-  FilteredThreads copy({Filter filter, List<SupportThreadInfo> threads}) =>
-      FilteredThreads(
-          filter: filter ?? this.filter,
-          threads: threads ?? List<SupportThreadInfo>.from(this.threads));
 }

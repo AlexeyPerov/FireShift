@@ -25,7 +25,10 @@ class ChatConnector extends StatelessWidget {
       if (state is ThreadChatLoaded) {
         return ChatScreen(thread: state.thread);
       } else {
-        return Container(); // TODO loading bar and/or error
+        return Scaffold(
+          body: Align(
+              alignment: Alignment.center, child: LinearProgressIndicator()),
+        );
       }
     }));
   }
@@ -74,8 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 : constraints.maxHeight;
 
             var messages = widget.thread.contents.messages;
-            var messagesCount =
-                messages != null ? messages.length : 0; // TODO can be null?
+            var messagesCount = messages.length;
 
             return Container(
               height: height,

@@ -5,8 +5,8 @@ import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DashboardState {
-  DashboardState({
+class ThreadListState {
+  ThreadListState({
     this.itemList,
     this.error,
     this.nextPageKey = 0,
@@ -17,9 +17,8 @@ class DashboardState {
   final int nextPageKey;
 }
 
-// TODO rename to smth like threads list?
-class DashboardBloc {
-  DashboardBloc() {
+class ThreadListBloc {
+  ThreadListBloc() {
     _onPageRequest.stream
         .flatMap(_fetchThreadInfos)
         .listen(_onNewListingStateController.add)
@@ -35,12 +34,11 @@ class DashboardBloc {
 
   final _subscriptions = CompositeSubscription();
 
-  final _onNewListingStateController =
-  BehaviorSubject<DashboardState>.seeded(
-    DashboardState(),
+  final _onNewListingStateController = BehaviorSubject<ThreadListState>.seeded(
+    ThreadListState(),
   );
 
-  Stream<DashboardState> get onNewListingState =>
+  Stream<ThreadListState> get onNewListingState =>
       _onNewListingStateController.stream;
 
   final _onPageRequest = StreamController<int>();
@@ -54,26 +52,26 @@ class DashboardBloc {
 
   String get searchInputValue => _onSearchInputChangedSubject.value;
 
-  Stream<DashboardState> _resetSearch() async* {
-    yield DashboardState();
+  Stream<ThreadListState> _resetSearch() async* {
+    yield ThreadListState();
     yield* _fetchThreadInfos(0);
   }
 
-  Stream<DashboardState> _fetchThreadInfos(int pageKey) async* {
+  Stream<ThreadListState> _fetchThreadInfos(int pageKey) async* {
     final lastListingState = _onNewListingStateController.value;
     try {
       final repository = getIt<SupportRepository>();
-      // TODO use searchTerm: searchInputValue as project
-      final newItems = await repository.fetchThreadsInfo(Filter(project: ""), PageTarget(pageStart: pageKey, pageSize: _pageSize));
+      final newItems = await repository.fetchThreadsInfo(Filter(project: searchInputValue),
+          PageTarget(pageStart: pageKey, pageSize: _pageSize));
       final isLastPage = newItems.length < _pageSize;
       final nextPageKey = isLastPage ? null : pageKey + newItems.length;
-      yield DashboardState(
+      yield ThreadListState(
         error: null,
         nextPageKey: nextPageKey,
         itemList: [...lastListingState?.itemList ?? [], ...newItems],
       );
     } catch (e) {
-      yield DashboardState(
+      yield ThreadListState(
         error: e,
         nextPageKey: lastListingState?.nextPageKey,
         itemList: lastListingState?.itemList,

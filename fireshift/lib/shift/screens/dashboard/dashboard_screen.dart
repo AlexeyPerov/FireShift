@@ -6,16 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'components/thread_paged_list.dart';
 
-// TODO remove?
-class DashboardConnector extends StatelessWidget {
-  DashboardConnector({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DashboardScreen();
-  }
-}
-
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key key}) : super(key: key);
 
@@ -41,25 +31,16 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 40,
-                      // TODO put filters here
                     ),
                     SizedBox(height: 10),
-                    Container(
-                        height: height - 50,
-                        child: ThreadPagedList()),
+                    Container(height: height - 50, child: ThreadPagedList()),
                   ],
                 ),
               );
             }),
           ),
         ],
-      ),
-      // TODO restore
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToChatScreen(context, ""),
-        backgroundColor: Color(0xFF757575),
-        child: Icon(Icons.add),
-      ),*/
+      )
     );
   }
 }

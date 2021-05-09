@@ -14,8 +14,7 @@ class SupportMessageCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    // TODO as extension
-    final isAdmin = message.authorId == "0";
+    final isAdmin = message.authorId == kAdminUserId;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -26,7 +25,7 @@ class SupportMessageCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: InkWell(
           splashColor: Colors.blue,
-          onTap: () => null, // TODO implement something like copy to clipboard or popup with details
+          onTap: () => null,
           child: Container(
             padding: EdgeInsets.all(25.0),
             child: IntrinsicHeight(

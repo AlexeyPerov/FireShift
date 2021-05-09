@@ -86,7 +86,7 @@ class AppWidget extends StatelessWidget {
 
     return MaterialPageRoute(
       builder: (context) => _redirectOnAppInit(
-              () => kReleaseMode ? AuthScreen() : DashboardConnector()),
+              () => kReleaseMode ? AuthScreen() : DashboardScreen()),
     );
   }
 }

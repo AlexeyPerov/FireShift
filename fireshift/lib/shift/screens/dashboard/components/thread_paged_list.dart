@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fireshift/shift/bloc/dashboard/dashboard.dart';
+import 'package:fireshift/shift/bloc/dashboard/thread_list.dart';
 import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:fireshift/shift/screens/chat/chat_screen.dart';
 import 'package:fireshift/shift/screens/dashboard/components/thread_card.dart';
@@ -15,7 +15,7 @@ class ThreadPagedList extends StatefulWidget {
 }
 
 class _ThreadPagedListState extends State<ThreadPagedList> {
-  final DashboardBloc _bloc = DashboardBloc();
+  final ThreadListBloc _bloc = ThreadListBloc();
   final PagingController<int, SupportThreadInfo> _pagingController =
       PagingController(firstPageKey: 0);
   StreamSubscription _blocSubscription;
@@ -69,7 +69,6 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
     super.dispose();
   }
 
-  // TODO pass here as an arg
   void _navigateToChatScreen(BuildContext context, String threadId) {
     Navigator.push(
       context,
