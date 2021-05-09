@@ -1,4 +1,5 @@
 import 'package:fireshift/platform/utilities/formatters.dart';
+import 'package:fireshift/platform/widgets/conditional_widget.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/bloc/entities/support_thread.dart';
 import 'package:flutter/material.dart';
@@ -19,91 +20,87 @@ class SupportThreadInfoCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
-      child: Dismissible(
-        direction: DismissDirection.endToStart,
-        background: Card(
-          elevation: 8.0,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        elevation: 8.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: InkWell(
+          onTap: () => onNavigateToChatScreen(context, threadInfo.id),
           child: Container(
-            color: kPrimaryColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 15.0),
-                  child: Text(
-                    'REMOVE',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        key: Key(UniqueKey().toString()),
-        onDismissed:
-            (direction) => /*onRemove(note.id)*/ null, // TODO implement
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          elevation: 8.0,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: InkWell(
-            onTap: () => onNavigateToChatScreen(context, threadInfo.id),
-            child: Container(
-              height: 135,
-              padding: EdgeInsets.all(25.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(threadInfo.subject,
-                            overflow: TextOverflow.ellipsis,
-                            style: textTheme.headline6.apply(
-                                color: colorScheme.onSurface,
-                                decoration: threadInfo.archived
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none)),
-                      ),
-                      Checkbox(
-                        value: threadInfo.archived,
-                        onChanged: (value) =>
-                            /*onArchive(note.id, !note.archived)*/ null, // TODO implement
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(threadInfo.preview,
+            height: 135,
+            padding: EdgeInsets.all(25.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(threadInfo.subject,
                           overflow: TextOverflow.ellipsis,
-                          style: textTheme.bodyText2.apply(
+                          style: textTheme.headline6.apply(
                               color: colorScheme.onSurface,
                               decoration: threadInfo.archived
                                   ? TextDecoration.lineThrough
-                                  : TextDecoration.none))),
-                  SizedBox(height: 5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(dateFormatter.format(threadInfo.updateTime),
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.headline6
-                              .apply(color: colorScheme.onSurface)),
-                      Text(timeFormatter.format(threadInfo.updateTime),
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.headline6
-                              .apply(color: colorScheme.onSurface)),
-                    ],
-                  ),
-                ],
-              ),
+                                  : TextDecoration.none)),
+                    ),
+                    ConditionalWidget(
+                      condition: threadInfo.starred,
+                      child: Icon(
+                        Icons.favorite,
+                        // color: Colors.pink,
+                        size: 24.0
+                      ),
+                    ),
+                    ConditionalWidget(
+                      condition: threadInfo.unread,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Icon(
+                            Icons.chat,
+                            // color: Colors.pink,
+                            size: 24.0
+                        ),
+                      ),
+                    ),
+                    ConditionalWidget(
+                      condition: threadInfo.archived,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Icon(
+                          Icons.archive,
+                          // color: Colors.pink,
+                          size: 24.0
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(threadInfo.preview,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText2.apply(
+                            color: colorScheme.onSurface,
+                            decoration: threadInfo.archived
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none))),
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(dateFormatter.format(threadInfo.updateTime),
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.headline6
+                            .apply(color: colorScheme.onSurface)),
+                    Text(timeFormatter.format(threadInfo.updateTime),
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.headline6
+                            .apply(color: colorScheme.onSurface)),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
