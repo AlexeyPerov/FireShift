@@ -8,4 +8,10 @@ class RandomUtilities {
     var result = min + (max - min) * next;
     return result.toInt();
   }
+
+  static hit(double chance) {
+    var random = new Random();
+    var next = random.nextDouble();
+    return next <= chance;
+  }
 }
