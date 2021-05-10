@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fireshift/shift/bloc/entities/support_thread.dart';
+import 'package:fireshift/shift/entities/support_thread.dart';
 
 abstract class SupportRepository {
   Future initialize();

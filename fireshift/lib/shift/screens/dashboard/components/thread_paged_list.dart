@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:fireshift/shift/bloc/dashboard/thread_list.dart';
-import 'package:fireshift/shift/bloc/entities/support_thread.dart';
+import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:fireshift/shift/screens/chat/chat_screen.dart';
 import 'package:fireshift/shift/screens/dashboard/components/thread_card.dart';
 import 'package:flutter/material.dart';

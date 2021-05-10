@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
-import 'package:fireshift/shift/bloc/entities/support_thread.dart';
+import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:fireshift/shift/bloc/thread_chat/thread_chat.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:fireshift/shift/screens/chat/components/message_card.dart';
