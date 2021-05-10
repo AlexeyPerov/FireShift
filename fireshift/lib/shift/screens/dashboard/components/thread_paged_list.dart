@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fireshift/platform/utilities/navigator.dart';
 import 'package:fireshift/shift/bloc/dashboard/thread_list.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:fireshift/shift/screens/chat/chat_screen.dart';
@@ -30,14 +31,13 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
     // the entire widget every time the state changes.
     // Instead, handling the subscription ourselves and updating only the
     // _pagingController is more efficient.
-    _blocSubscription =
-        _bloc.onNewListingState.listen((listingState) {
-          _pagingController.value = PagingState(
-            nextPageKey: listingState.nextPageKey,
-            error: listingState.error,
-            itemList: listingState.itemList,
-          );
-        });
+    _blocSubscription = _bloc.onNewListingState.listen((listingState) {
+      _pagingController.value = PagingState(
+        nextPageKey: listingState.nextPageKey,
+        error: listingState.error,
+        itemList: listingState.itemList,
+      );
+    });
 
     super.initState();
   }
@@ -49,14 +49,12 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
         () => _pagingController.refresh(),
       ),
       child: PagedListView<int, SupportThreadInfo>.separated(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<SupportThreadInfo>(
-          itemBuilder: (context, item, index) => SupportThreadInfoCard(
-              threadInfo:
-                  item,
-              onNavigateToChatScreen: _navigateToChatScreen),
-        )
-      ),
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<SupportThreadInfo>(
+            itemBuilder: (context, item, index) => SupportThreadInfoCard(
+                threadInfo: item,
+                onNavigateToChatScreen: _navigateToChatScreen),
+          )),
     );
   }
 
@@ -69,11 +67,7 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
   }
 
   void _navigateToChatScreen(BuildContext context, String threadId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatConnector(threadId: threadId),
-      ),
-    );
+    NavigatorUtilities.pushAndRemoveUntil(
+        context, (c) => ChatConnector(threadId: threadId));
   }
 }

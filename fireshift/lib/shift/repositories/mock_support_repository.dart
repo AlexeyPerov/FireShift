@@ -86,32 +86,32 @@ class MockSupportRepository extends SupportRepository {
   Future<SupportThreadInfo> markRead(String id, bool read) async {
     await fakeDelay();
 
-    var ticket = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.id == id);
 
-    var info = ticket.info.copy(unread: !read);
+    var info = thread.info.copy(unread: !read);
 
-    var newTicket = ticket.copy(info: info);
+    var newThread = thread.copy(info: info);
 
-    threads.remove(ticket);
-    threads.add(newTicket);
+    var index = threads.indexOf(thread);
+    threads[index] = newThread;
 
-    return Future.value(newTicket.info);
+    return Future.value(newThread.info);
   }
 
   @override
   Future<SupportThreadInfo> star(String id, bool star) async {
     await fakeDelay();
 
-    var ticket = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.id == id);
 
-    var info = ticket.info.copy(starred: star);
+    var info = thread.info.copy(starred: star);
 
-    var newTicket = ticket.copy(info: info);
+    var newThread = thread.copy(info: info);
 
-    threads.remove(ticket);
-    threads.add(newTicket);
+    var index = threads.indexOf(thread);
+    threads[index] = newThread;
 
-    return Future.value(newTicket.info);
+    return Future.value(newThread.info);
   }
 
   Future fakeDelay() async {

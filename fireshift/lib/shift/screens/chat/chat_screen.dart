@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:fireshift/platform/utilities/navigator.dart';
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:fireshift/shift/bloc/thread_chat/thread_chat.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:fireshift/shift/screens/chat/components/message_card.dart';
+import 'package:fireshift/shift/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,8 @@ class ChatConnector extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ThreadChatBloc>(create: (context) {
       return ThreadChatBloc(supportRepository: getIt<SupportRepository>())
-        ..add(LoadThread(threadId));
+        ..add(LoadThread(threadId))
+        ..add(MarkThreadRead(threadId, true)); // TODO handle Load error
     }, child: BlocBuilder<ThreadChatBloc, ThreadChatState>(
         builder: (context, ThreadChatState state) {
       if (state is ThreadChatLoaded) {
@@ -61,7 +64,8 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
           leading: IconButton(
         icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => NavigatorUtilities.pushAndRemoveUntil(
+            context, (c) => DashboardScreen()),
       )),
       floatingActionButton: FloatingActionButton(
           onPressed: () async => {postPressed(context)},
@@ -86,8 +90,35 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.favorite,
+                                color: widget.thread.info.starred
+                                    ? Colors.pink
+                                    : Theme.of(context).iconTheme.color,
+                                size: 24.0),
+                            onPressed: () => {
+                                  BlocProvider.of<ThreadChatBloc>(context).add(
+                                      StarThread(widget.thread.info.id,
+                                          !widget.thread.info.starred))
+                                }),
+                        SizedBox(width: 20),
+                        IconButton(
+                            icon: Icon(Icons.archive,
+                                color: widget.thread.info.archived
+                                    ? Colors.pink
+                                    : Theme.of(context).iconTheme.color,
+                                size: 24.0),
+                            onPressed: () => {
+                                  BlocProvider.of<ThreadChatBloc>(context).add(
+                                      ArchiveThread(widget.thread.info.id,
+                                          !widget.thread.info.archived))
+                                }),
+                      ],
+                    ),
                     SizedBox(
-                      height: height - 166,
+                      height: height - 166 - 40,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           padding: const EdgeInsets.all(8.0),

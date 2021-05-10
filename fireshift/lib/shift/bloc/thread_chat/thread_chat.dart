@@ -3,8 +3,6 @@ import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:fireshift/shift/repositories/support_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// State
-
 abstract class ThreadChatState extends Equatable {
   @override
   List<Object> get props => [];
@@ -24,8 +22,6 @@ class ThreadChatLoaded extends ThreadChatState {
 
 class ThreadChatNotLoaded extends ThreadChatState {}
 
-// Bloc
-
 class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
   final SupportRepository supportRepository;
 
@@ -37,6 +33,8 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
       yield* _mapLoadThreadContentsToState(event);
     } else if (event is ThreadUpdated) {
       yield* _mapThreadUpdateToState(event);
+    } else if (event is ThreadInfoUpdated) {
+      yield* _mapThreadInfoUpdateToState(event);
     } else if (event is AddThreadMessage) {
       yield* _mapAddThreadMessageToState(event);
     } else if (event is ArchiveThread) {
@@ -56,6 +54,14 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
 
   Stream<ThreadChatState> _mapThreadUpdateToState(ThreadUpdated event) async* {
     yield ThreadChatLoaded(event.thread);
+  }
+
+  Stream<ThreadChatState> _mapThreadInfoUpdateToState(
+      ThreadInfoUpdated event) async* {
+    var currentState = state;
+    if (currentState is ThreadChatLoaded) {
+      yield ThreadChatLoaded(currentState.thread.copy(info: event.thread));
+    }
   }
 
   Stream<ThreadChatState> _mapAddThreadMessageToState(

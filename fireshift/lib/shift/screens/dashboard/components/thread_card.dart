@@ -51,7 +51,6 @@ class SupportThreadInfoCard extends StatelessWidget {
                       condition: threadInfo.starred,
                       child: Icon(
                         Icons.favorite,
-                        // color: Colors.pink,
                         size: 24.0
                       ),
                     ),
