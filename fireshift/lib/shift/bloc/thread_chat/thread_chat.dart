@@ -39,8 +39,13 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
       yield* _mapThreadUpdateToState(event);
     } else if (event is AddThreadMessage) {
       yield* _mapAddThreadMessageToState(event);
+    } else if (event is ArchiveThread) {
+      yield* _mapArchiveThreadToState(event);
+    } else if (event is StarThread) {
+      yield* _mapStarThreadToState(event);
+    } else if (event is MarkThreadRead) {
+      yield* _mapMarkThreadReadToState(event);
     }
-    // TODO other actions
   }
 
   Stream<ThreadChatState> _mapLoadThreadContentsToState(
@@ -58,6 +63,22 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
     var thread = await supportRepository.addThreadMessage(
         event.threadId, event.message.authorId, event.message.contents);
     add(ThreadUpdated(thread));
+  }
+
+  Stream<ThreadChatState> _mapArchiveThreadToState(ArchiveThread event) async* {
+    var thread = await supportRepository.archive(event.threadId, event.archive);
+    add(ThreadInfoUpdated(thread));
+  }
+
+  Stream<ThreadChatState> _mapStarThreadToState(StarThread event) async* {
+    var thread = await supportRepository.star(event.threadId, event.star);
+    add(ThreadInfoUpdated(thread));
+  }
+
+  Stream<ThreadChatState> _mapMarkThreadReadToState(
+      MarkThreadRead event) async* {
+    var thread = await supportRepository.markRead(event.threadId, event.read);
+    add(ThreadInfoUpdated(thread));
   }
 }
 
@@ -114,4 +135,16 @@ class ThreadUpdated extends ThreadChatEvent {
 
   @override
   String toString() => 'ThreadUpdated { thread: $thread }';
+}
+
+class ThreadInfoUpdated extends ThreadChatEvent {
+  final SupportThreadInfo thread;
+
+  const ThreadInfoUpdated(this.thread);
+
+  @override
+  List<Object> get props => [thread];
+
+  @override
+  String toString() => 'ThreadInfoUpdated { thread: $thread }';
 }
