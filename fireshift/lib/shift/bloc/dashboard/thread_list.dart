@@ -24,7 +24,7 @@ class ThreadListBloc {
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
 
-    _onSearchInputChangedSubject.stream
+    _onFilterChangedSubject.stream
         .flatMap((_) => _resetSearch())
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
@@ -45,12 +45,12 @@ class ThreadListBloc {
 
   Sink<int> get onPageRequestSink => _onPageRequest.sink;
 
-  final _onSearchInputChangedSubject = BehaviorSubject<String>();
+  final _onFilterChangedSubject = BehaviorSubject<Filter>();
 
-  Sink<String> get onSearchInputChangedSink =>
-      _onSearchInputChangedSubject.sink;
+  Sink<Filter> get onFilterChangedSink =>
+      _onFilterChangedSubject.sink;
 
-  String get searchInputValue => _onSearchInputChangedSubject.value;
+  Filter get currentFilter => _onFilterChangedSubject.value;
 
   Stream<ThreadListState> _resetSearch() async* {
     yield ThreadListState();
@@ -61,7 +61,8 @@ class ThreadListBloc {
     final lastListingState = _onNewListingStateController.value;
     try {
       final repository = getIt<SupportRepository>();
-      final newItems = await repository.fetchThreadsInfo(Filter(project: searchInputValue),
+      final newItems = await repository.fetchThreadsInfo(
+          currentFilter ?? Filter.deactivated(),
           PageTarget(pageStart: pageKey, pageSize: _pageSize));
       final isLastPage = newItems.length < _pageSize;
       final nextPageKey = isLastPage ? null : pageKey + newItems.length;
@@ -80,7 +81,7 @@ class ThreadListBloc {
   }
 
   void dispose() {
-    _onSearchInputChangedSubject.close();
+    _onFilterChangedSubject.close();
     _onNewListingStateController.close();
     _subscriptions.dispose();
     _onPageRequest.close();

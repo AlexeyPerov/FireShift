@@ -88,8 +88,6 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
   }
 }
 
-// Events
-
 abstract class ThreadChatEvent extends Equatable {
   const ThreadChatEvent();
 
@@ -101,6 +99,9 @@ class LoadThread extends ThreadChatEvent {
   final String threadId;
 
   LoadThread(this.threadId);
+
+  @override
+  List<Object> get props => [threadId];
 }
 
 class AddThreadMessage extends ThreadChatEvent {
@@ -108,6 +109,9 @@ class AddThreadMessage extends ThreadChatEvent {
   final SupportMessage message;
 
   AddThreadMessage(this.threadId, this.message);
+
+  @override
+  List<Object> get props => [threadId, message];
 }
 
 class ArchiveThread extends ThreadChatEvent {
@@ -115,6 +119,9 @@ class ArchiveThread extends ThreadChatEvent {
   final bool archive;
 
   ArchiveThread(this.threadId, this.archive);
+
+  @override
+  List<Object> get props => [threadId, archive];
 }
 
 class StarThread extends ThreadChatEvent {
@@ -122,6 +129,9 @@ class StarThread extends ThreadChatEvent {
   final bool star;
 
   StarThread(this.threadId, this.star);
+
+  @override
+  List<Object> get props => [threadId, star];
 }
 
 class MarkThreadRead extends ThreadChatEvent {
@@ -129,6 +139,9 @@ class MarkThreadRead extends ThreadChatEvent {
   final bool read;
 
   MarkThreadRead(this.threadId, this.read);
+
+  @override
+  List<Object> get props => [threadId, read];
 }
 
 class ThreadUpdated extends ThreadChatEvent {

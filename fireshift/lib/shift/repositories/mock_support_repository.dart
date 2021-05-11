@@ -61,15 +61,23 @@ class MockSupportRepository extends SupportRepository {
       Filter filter, PageTarget pageTarget) async {
     await fakeDelay();
 
-    var projectTickets = threads
-        .where((ticket) => ticket.info.project.contains(filter.project ?? ""))
+    var filteredThreads = threads
+        .where((thread) =>
+            !filter.archived.activated ||
+            thread.info.archived == filter.archived.value)
+        .where((thread) =>
+            !filter.starred.activated ||
+            thread.info.starred == filter.starred.value)
+        .where((thread) =>
+            !filter.unread.activated ||
+            thread.info.unread == filter.unread.value)
         .map((e) => e.info)
         .toList(growable: false);
 
-    var start = pageTarget.pageStart.clamp(0, projectTickets.length);
-    var end = (start + pageTarget.pageSize).clamp(0, projectTickets.length);
+    var start = pageTarget.pageStart.clamp(0, filteredThreads.length);
+    var end = (start + pageTarget.pageSize).clamp(0, filteredThreads.length);
 
-    var tickets = projectTickets.getRange(start, end).toList(growable: false);
+    var tickets = filteredThreads.getRange(start, end).toList(growable: false);
 
     return Future.value(tickets);
   }

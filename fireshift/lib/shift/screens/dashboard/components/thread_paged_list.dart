@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ThreadPagedList extends StatefulWidget {
-  const ThreadPagedList({Key key}) : super(key: key);
+  final Filter filter;
+
+  const ThreadPagedList(this.filter, {Key key}) : super(key: key);
 
   @override
   _ThreadPagedListState createState() => _ThreadPagedListState();
@@ -23,6 +25,8 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
 
   @override
   void initState() {
+    _bloc.onFilterChangedSink.add(widget.filter);
+
     _pagingController.addPageRequestListener((pageKey) {
       _bloc.onPageRequestSink.add(pageKey);
     });
@@ -44,6 +48,8 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
 
   @override
   Widget build(BuildContext context) {
+    _bloc.onFilterChangedSink.add(widget.filter);
+
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
@@ -54,7 +60,8 @@ class _ThreadPagedListState extends State<ThreadPagedList> {
             itemBuilder: (context, item, index) => SupportThreadInfoCard(
                 threadInfo: item,
                 onNavigateToChatScreen: _navigateToChatScreen),
-          )),
+          ),
+          separatorBuilder: (c, i) => Container()),
     );
   }
 

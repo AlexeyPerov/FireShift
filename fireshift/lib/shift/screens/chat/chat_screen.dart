@@ -65,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
           leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => NavigatorUtilities.pushAndRemoveUntil(
-            context, (c) => DashboardScreen()),
+            context, (c) => DashboardConnector()),
       )),
       floatingActionButton: FloatingActionButton(
           onPressed: () async => {postPressed(context)},
