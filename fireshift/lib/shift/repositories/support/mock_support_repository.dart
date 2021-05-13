@@ -1,7 +1,7 @@
 import 'package:fireshift/platform/utilities/future_extensions.dart';
 import 'package:fireshift/platform/utilities/random.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
-import 'package:fireshift/shift/repositories/support_repository.dart';
+import 'package:fireshift/shift/repositories/support/support_repository.dart';
 
 class MockSupportRepository extends SupportRepository {
   List<SupportThread> threads = List<SupportThread>.empty(growable: true);

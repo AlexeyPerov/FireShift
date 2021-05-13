@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
-import 'package:fireshift/shift/repositories/support_repository.dart';
+import 'package:fireshift/shift/repositories/support/support_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ThreadListState {

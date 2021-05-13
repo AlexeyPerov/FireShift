@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
-import 'package:fireshift/shift/repositories/support_repository.dart';
+import 'package:fireshift/shift/repositories/support/support_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class ThreadChatState extends Equatable {

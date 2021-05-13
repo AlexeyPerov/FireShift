@@ -59,6 +59,7 @@ class AppWidget extends StatelessWidget {
       future: _appInitialization,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
+          logger.e(snapshot.error);
           return ErrorScreen();
         }
 
