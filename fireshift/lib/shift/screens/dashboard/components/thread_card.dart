@@ -79,23 +79,27 @@ class SupportThreadInfoCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 5),
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(threadInfo.preview,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.bodyText2.apply(
-                            color: colorScheme.onSurface,
-                            decoration: threadInfo.archived
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none))),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(threadInfo.preview,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.bodyText2.apply(
+                              color: colorScheme.onSurface,
+                              decoration: threadInfo.archived
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none))),
+                ),
                 SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Expanded(child: Text(threadInfo.senderId)),
                     Text(dateFormatter.format(threadInfo.updateTime),
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6
                             .apply(color: colorScheme.onSurface)),
+                    SizedBox(width: 10),
                     Text(timeFormatter.format(threadInfo.updateTime),
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6
