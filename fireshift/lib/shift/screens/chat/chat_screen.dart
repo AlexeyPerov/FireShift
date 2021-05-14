@@ -92,33 +92,45 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     Row(
                       children: [
-                        IconButton(
-                            icon: Icon(Icons.favorite,
-                                color: widget.thread.info.starred
-                                    ? Colors.pink
-                                    : Theme.of(context).iconTheme.color,
-                                size: 24.0),
-                            onPressed: () => {
-                                  BlocProvider.of<ThreadChatBloc>(context).add(
-                                      StarThread(widget.thread.info.id,
-                                          !widget.thread.info.starred))
-                                }),
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(Icons.favorite,
+                                    color: widget.thread.info.starred
+                                        ? Colors.pink
+                                        : Theme.of(context).iconTheme.color,
+                                    size: 24.0),
+                                onPressed: () => {
+                                      BlocProvider.of<ThreadChatBloc>(context).add(
+                                          StarThread(widget.thread.info.id,
+                                              !widget.thread.info.starred))
+                                    }),
+                            SizedBox(height: 5),
+                            Text("Favorite")
+                          ],
+                        ),
                         SizedBox(width: 20),
-                        IconButton(
-                            icon: Icon(Icons.archive,
-                                color: widget.thread.info.archived
-                                    ? Colors.pink
-                                    : Theme.of(context).iconTheme.color,
-                                size: 24.0),
-                            onPressed: () => {
-                                  BlocProvider.of<ThreadChatBloc>(context).add(
-                                      ArchiveThread(widget.thread.info.id,
-                                          !widget.thread.info.archived))
-                                }),
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(Icons.archive,
+                                    color: widget.thread.info.archived
+                                        ? Colors.pink
+                                        : Theme.of(context).iconTheme.color,
+                                    size: 24.0),
+                                onPressed: () => {
+                                      BlocProvider.of<ThreadChatBloc>(context).add(
+                                          ArchiveThread(widget.thread.info.id,
+                                              !widget.thread.info.archived))
+                                    }),
+                            SizedBox(height: 5),
+                            Text("Archive")
+                          ],
+                        ),
                       ],
                     ),
                     SizedBox(
-                      height: height - 166 - 40,
+                      height: height - 231,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           padding: const EdgeInsets.all(8.0),

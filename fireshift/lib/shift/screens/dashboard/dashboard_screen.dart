@@ -51,7 +51,7 @@ class DashboardScreen extends StatelessWidget {
                       FilterButtons(filter: filter),
                       SizedBox(height: 10),
                       Container(
-                          height: height - 50, child: ThreadPagedList(filter)),
+                          height: height - 75, child: ThreadPagedList(filter)),
                     ],
                   ),
                 );
@@ -72,29 +72,47 @@ class FilterButtons extends StatelessWidget {
     final defaultColor = Theme.of(context).iconTheme.color;
 
     return Row(children: [
-      IconButton(
-          icon: Icon(Icons.archive,
-              color: getColor(filter.archived, defaultColor), size: 24.0),
-          onPressed: () => {
-                BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                    filter.copy(archived: filter.archived.next())))
-              }),
+      Column(
+        children: [
+          IconButton(
+              icon: Icon(Icons.archive,
+                  color: getColor(filter.archived, defaultColor), size: 24.0),
+              onPressed: () => {
+                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
+                        filter.copy(archived: filter.archived.next())))
+                  }),
+          SizedBox(height: 5),
+          Text("Archived")
+        ],
+      ),
       SizedBox(width: 10),
-      IconButton(
-          icon: Icon(Icons.chat,
-              color: getColor(filter.unread, defaultColor), size: 24.0),
-          onPressed: () => {
-                BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                    filter.copy(unread: filter.unread.next())))
-              }),
+      Column(
+        children: [
+          IconButton(
+              icon: Icon(Icons.chat,
+                  color: getColor(filter.unread, defaultColor), size: 24.0),
+              onPressed: () => {
+                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
+                        filter.copy(unread: filter.unread.next())))
+                  }),
+          SizedBox(height: 5),
+          Text("Unread")
+        ],
+      ),
       SizedBox(width: 10),
-      IconButton(
-          icon: Icon(Icons.favorite,
-              color: getColor(filter.starred, defaultColor), size: 24.0),
-          onPressed: () => {
-                BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                    filter.copy(starred: filter.starred.next())))
-              })
+      Column(
+        children: [
+          IconButton(
+              icon: Icon(Icons.favorite,
+                  color: getColor(filter.starred, defaultColor), size: 24.0),
+              onPressed: () => {
+                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
+                        filter.copy(starred: filter.starred.next())))
+                  }),
+          SizedBox(height: 5),
+          Text("Favorite")
+        ],
+      )
     ]);
   }
 
