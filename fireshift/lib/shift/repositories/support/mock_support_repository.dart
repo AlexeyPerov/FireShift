@@ -64,7 +64,10 @@ class MockSupportRepository extends SupportRepository {
     var filteredThreads = threads
         .where((thread) =>
             thread.info.subject.contains(filter.contents.value) ||
-            thread.info.senderId.contains(filter.contents.value))
+            thread.info.senderId.contains(filter.contents.value) ||
+            thread.info.project.contains(filter.contents.value) ||
+            thread.contents.messages.any(
+                (message) => message.contents.contains(filter.contents.value)))
         .where((thread) =>
             !filter.archived.activated ||
             thread.info.archived == filter.archived.value)
