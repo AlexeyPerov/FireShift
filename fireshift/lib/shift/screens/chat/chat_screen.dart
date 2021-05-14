@@ -152,7 +152,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             keyboardType: TextInputType.multiline,
                             autofocus: true),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

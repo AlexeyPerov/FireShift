@@ -63,6 +63,9 @@ class MockSupportRepository extends SupportRepository {
 
     var filteredThreads = threads
         .where((thread) =>
+            thread.info.subject.contains(filter.contents.value) ||
+            thread.info.senderId.contains(filter.contents.value))
+        .where((thread) =>
             !filter.archived.activated ||
             thread.info.archived == filter.archived.value)
         .where((thread) =>
@@ -77,9 +80,9 @@ class MockSupportRepository extends SupportRepository {
     var start = pageTarget.pageStart.clamp(0, filteredThreads.length);
     var end = (start + pageTarget.pageSize).clamp(0, filteredThreads.length);
 
-    var tickets = filteredThreads.getRange(start, end).toList(growable: false);
+    var result = filteredThreads.getRange(start, end).toList(growable: false);
 
-    return Future.value(tickets);
+    return Future.value(result);
   }
 
   @override

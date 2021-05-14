@@ -112,20 +112,23 @@ class SupportThread {
 }
 
 class Filter {
+  final FilterText contents;
   final FilterToggle starred;
   final FilterToggle unread;
   final FilterToggle archived;
 
-  Filter({this.starred, this.unread, this.archived});
+  Filter({this.contents, this.starred, this.unread, this.archived});
 
   Filter.deactivated()
-      : starred = FilterToggle.deactivated(),
+      : contents = FilterText.deactivated(),
+        starred = FilterToggle.deactivated(),
         unread = FilterToggle.deactivated(),
         archived = FilterToggle.deactivated();
 
   Filter copy(
-          {FilterToggle starred, FilterToggle unread, FilterToggle archived}) =>
+          {FilterText contents, FilterToggle starred, FilterToggle unread, FilterToggle archived}) =>
       Filter(
+          contents: contents ?? this.contents,
           starred: starred ?? this.starred,
           unread: unread ?? this.unread,
           archived: archived ?? this.archived);
@@ -153,6 +156,18 @@ class FilterToggle {
     else
       return FilterToggle.deactivated();
   }
+}
+
+class FilterText {
+  final String value;
+
+  FilterText(this.value);
+
+  FilterText.activated(String newValue)
+      : value = newValue;
+
+  FilterText.deactivated()
+      : value = "";
 }
 
 class PageTarget {

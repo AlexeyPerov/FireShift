@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/bloc/dashboard/dashboard.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
+import 'package:fireshift/shift/screens/dashboard/components/filter_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,10 +49,10 @@ class DashboardScreen extends StatelessWidget {
                   height: height,
                   child: Column(
                     children: [
-                      FilterButtons(filter: filter),
-                      SizedBox(height: 10),
+                      FilterCard(filter: filter),
+                      SizedBox(height: 7),
                       Container(
-                          height: height - 75, child: ThreadPagedList(filter)),
+                          height: height - 75 - 51, child: ThreadPagedList(filter)),
                     ],
                   ),
                 );
@@ -62,61 +63,5 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-class FilterButtons extends StatelessWidget {
-  final Filter filter;
 
-  const FilterButtons({Key key, this.filter}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final defaultColor = Theme.of(context).iconTheme.color;
-
-    return Row(children: [
-      Column(
-        children: [
-          IconButton(
-              icon: Icon(Icons.archive,
-                  color: getColor(filter.archived, defaultColor), size: 24.0),
-              onPressed: () => {
-                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                        filter.copy(archived: filter.archived.next())))
-                  }),
-          SizedBox(height: 5),
-          Text("Archived")
-        ],
-      ),
-      SizedBox(width: 10),
-      Column(
-        children: [
-          IconButton(
-              icon: Icon(Icons.chat,
-                  color: getColor(filter.unread, defaultColor), size: 24.0),
-              onPressed: () => {
-                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                        filter.copy(unread: filter.unread.next())))
-                  }),
-          SizedBox(height: 5),
-          Text("Unread")
-        ],
-      ),
-      SizedBox(width: 10),
-      Column(
-        children: [
-          IconButton(
-              icon: Icon(Icons.favorite,
-                  color: getColor(filter.starred, defaultColor), size: 24.0),
-              onPressed: () => {
-                    BlocProvider.of<DashboardBloc>(context).add(ChangeFilterEvent(
-                        filter.copy(starred: filter.starred.next())))
-                  }),
-          SizedBox(height: 5),
-          Text("Favorite")
-        ],
-      )
-    ]);
-  }
-
-  Color getColor(FilterToggle toggle, Color defaultColor) => toggle.activated
-      ? (toggle.value ? Colors.pink : defaultColor)
-      : defaultColor.withAlpha(128);
-}
