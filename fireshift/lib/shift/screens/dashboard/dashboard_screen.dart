@@ -52,7 +52,7 @@ class DashboardScreen extends StatelessWidget {
                       FilterCard(filter: filter),
                       SizedBox(height: 7),
                       Container(
-                          height: height - 75 - 51, child: ThreadPagedList(filter)),
+                          height: height - 75 - 51, child: ThreadPagedList(filter))
                     ],
                   ),
                 );
