@@ -60,9 +60,9 @@ class AppThemeData {
   static const ColorScheme darkColorScheme = ColorScheme(
     primary: Color(0xFFFF8383),
     primaryVariant: Color(0xFF1CDEC9),
-    secondary: Color(0xFF4D1F7C),
-    secondaryVariant: Color(0xFF451B6F),
-    background: Color(0xFF241E30),
+    secondary: Color(0xFF1F797C),
+    secondaryVariant: Color(0xFF1B526F),
+    background: Color(0xFF1E302F),
     surface: Color(0xFF1F1929),
     onBackground: Color(0x0DFFFFFF), // White with 0.05 opacity
     error: _darkFillColor,
