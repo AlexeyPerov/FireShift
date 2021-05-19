@@ -1,66 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_client/client/screens/auth_screen.dart';
+import 'package:flutter_client/client/app.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MyApp());
+  GoogleFonts.config.allowRuntimeFetching = true;
+  runApp(AppWidget());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class AppWidget extends StatelessWidget {
+  final Future _appInitialization;
+
+  AppWidget() : _appInitialization = App.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      restorationScopeId: 'shift_client',
+      title: 'ShiftClient',
+      onGenerateRoute: _generateRoute,
+    );
+  }
+
+  FutureBuilder _redirectOnAppInit(RouteToWidget routeTo) {
+    return FutureBuilder(
+      future: _appInitialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          logger.e(snapshot.error);
+          return Container();
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return routeTo();
+        }
+
+        return LinearProgressIndicator();
+      },
+    );
+  }
+
+  Route<dynamic> _generateRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      builder: (context) => _redirectOnAppInit(() => AuthScreen()),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
+typedef Widget RouteToWidget();

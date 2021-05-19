@@ -101,7 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
     if (result.isRight()) {
       _navigateToErrorScreen(context);
     } else {
-      _navigateToNotes(context);
+      _navigateToDashboard(context);
     }
   }
 
@@ -114,7 +114,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void _navigateToNotes(BuildContext context) {
+  void _navigateToDashboard(BuildContext context) {
     NavigatorUtilities.pushAndRemoveUntil(
         context, (context) => DashboardConnector());
   }

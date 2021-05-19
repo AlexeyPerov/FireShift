@@ -45,7 +45,7 @@ class SupportMessageCard extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: ConditionalWidget(
-                          condition: message.authorId != "0",
+                          condition: message.authorId != kAdminUserId,
                           child: Text("User " + message.authorId,
                               style: textTheme.subtitle1
                                   .apply(color: colorScheme.onSurface)),
