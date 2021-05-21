@@ -117,3 +117,6 @@ dist
 
 # aws
 .aws
+
+# other
+.build
