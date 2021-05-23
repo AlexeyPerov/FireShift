@@ -1,10 +1,10 @@
 import {Body, Controller, Get, Post, Query} from '@nestjs/common';
-import { AppService } from './app.service';
+import { MessagesService } from './messages.service';
 import {SupportMessage} from "./support-message.interface";
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class MessagesController {
+  constructor(private readonly appService: MessagesService) {}
 
   @Get('messages/unread_count?')
   getUnreadCount(@Query('id') id : string) {
