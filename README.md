@@ -1,5 +1,7 @@
 # A simple tool for users support
 
+The tool can be used to exchange messages with users in your applications. For example, to support users and/or collect feedback in the early stages of development.
+
 ![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 (currently uses mock data)
 
