@@ -1,6 +1,5 @@
 import {Body, Controller, Get, Post, Query} from '@nestjs/common';
 import { MessagingService } from './messaging.service';
-import { SupportMessage } from "../shared/models/support-message.model";
 
 @Controller()
 export class MessagingController {
@@ -17,8 +16,8 @@ export class MessagingController {
   }
 
   @Post('messages/add')
-  addMessage(@Body() message: SupportMessage){
-    console.log(message);
-    return this.service.addMessage(message);
+  addMessage(@Body() id: string, contents: string){
+    console.log(`${id}: ${contents}`);
+    return this.service.addMessage(id, contents);
   }
 }
