@@ -11,6 +11,8 @@ export class AdminController {
     fetchThreadsInfo(
         @Query('filter') filter : Filter,
         @Query('pageTarget') pageTarget : PageTarget)  {
+        console.log(filter);
+        console.log(pageTarget);
         return this.service.fetchThreadsInfo(filter, pageTarget);
     }
 
@@ -19,17 +21,17 @@ export class AdminController {
         return this.service.fetchThread(id);
     }
 
-    @Post('admin/mark_read?')
+    @Post('admin/mark_read')
     markRead(@Body() id: string, read: boolean) {
         return this.service.markRead(id, read);
     }
 
-    @Post('admin/archive?')
+    @Post('admin/archive')
     archive(@Body() id: string, archive: boolean) {
         return this.service.archive(id, archive);
     }
 
-    @Post('admin/mark_read?')
+    @Post('admin/star')
     star(@Body() id: string, star: boolean) {
         return this.service.star(id, star);
     }
