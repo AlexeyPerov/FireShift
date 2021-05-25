@@ -3,9 +3,9 @@ export class SupportThreadInfo {
     public project: string;
     public senderId: string;
     public receiverId: string;
-    public starred: string;
-    public unread: string;
-    public archived: string;
+    public starred: boolean;
+    public unread: boolean;
+    public archived: boolean;
     public subject: string;
     public updateTime: number;
     public preview: string;

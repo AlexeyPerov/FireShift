@@ -19,17 +19,17 @@ export class AdminController {
         return this.service.fetchThread(id);
     }
 
-    @Post('admin/mark_read')
+    @Post('admin/mark_read?')
     markRead(@Body() id: string, read: boolean) {
         return this.service.markRead(id, read);
     }
 
-    @Post('admin/archive')
+    @Post('admin/archive?')
     archive(@Body() id: string, archive: boolean) {
         return this.service.archive(id, archive);
     }
 
-    @Post('admin/mark_read')
+    @Post('admin/mark_read?')
     star(@Body() id: string, star: boolean) {
         return this.service.star(id, star);
     }
