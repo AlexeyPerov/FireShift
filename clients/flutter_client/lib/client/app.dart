@@ -23,7 +23,7 @@ class App {
     }
 
     getIt.registerSingleton<SupportRequestRepository>(
-        MockSupportRequestRepository(),
+        RemoteSupportRequestRepository(),
         signalsReady: true);
   }
 

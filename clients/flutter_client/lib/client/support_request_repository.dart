@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 abstract class SupportRequestRepository {
   String getCurrentUserId();
   setUserId(String id);
@@ -39,6 +43,44 @@ class MockSupportRequestRepository extends SupportRequestRepository {
   }
 }
 
+class RemoteSupportRequestRepository extends SupportRequestRepository {
+  String _currentId;
+
+  @override
+  setUserId(String id) {
+    _currentId = id;
+  }
+
+  @override
+  String getCurrentUserId() {
+    return _currentId;
+  }
+
+  @override
+  Future<List<SupportMessage>> fetchMessages() async {
+    final response = await http.get(
+        Uri.parse('http://localhost:3000/dev/messages/fetch?id=' + _currentId));
+
+    Iterable l = json.decode(response.body);
+    List<SupportMessage> messages = List<SupportMessage>.from(
+        l.map((model) => SupportMessage.fromJson(model)));
+
+    return Future.value(messages);
+  }
+
+  @override
+  Future addMessage(SupportMessage message) async {
+    var messageString = json.encode(message.toJson());
+    return http.post(
+      Uri.parse("http://localhost:3000/dev/messages/add"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'message': messageString}),
+    );
+  }
+}
+
 class SupportMessage {
   SupportMessage({this.authorId, this.contents, this.time});
 
@@ -51,4 +93,18 @@ class SupportMessage {
   final String authorId;
   final String contents;
   final DateTime time;
+
+  factory SupportMessage.fromJson(Map<String, dynamic> json) {
+    return SupportMessage(
+      authorId: json['authorId'],
+      contents: json['contents'],
+      time: DateTime.fromMicrosecondsSinceEpoch(json['time']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'authorId': authorId,
+        'contents': contents,
+        'time': time.microsecondsSinceEpoch
+      };
 }
