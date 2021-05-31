@@ -4,7 +4,7 @@ import 'package:fireshift/platform/repositories/settings_repository.dart';
 import 'package:fireshift/shift/bloc/loggable_bloc_observer.dart';
 import 'package:fireshift/shift/repositories/auth/auth_repository.dart';
 import 'package:fireshift/shift/repositories/auth/firebase_auth_repository.dart';
-import 'package:fireshift/shift/repositories/support/mock_support_repository.dart';
+import 'package:fireshift/shift/repositories/support/remote_support_repository.dart';
 import 'package:fireshift/shift/repositories/support/support_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,18 +34,16 @@ class App {
 
     try {
       firebaseApp = await Firebase.initializeApp();
-    } catch(e) {
+    } catch (e) {
       logger.e(e);
     }
 
-    getIt.registerSingleton<AuthRepository>(
-        FirebaseAuthRepository(),
+    getIt.registerSingleton<AuthRepository>(FirebaseAuthRepository(),
         signalsReady: true);
 
     await getIt.get<AuthRepository>().initialize();
 
-    getIt.registerSingleton<SupportRepository>(
-        MockSupportRepository(),
+    getIt.registerSingleton<SupportRepository>(RemoteSupportRepository(),
         signalsReady: true);
 
     await getIt<SupportRepository>().initialize();
@@ -60,8 +58,7 @@ class App {
           lineLength: 120,
           colors: true,
           printEmojis: true,
-          printTime: false
-      ),
+          printTime: false),
     );
   }
 }

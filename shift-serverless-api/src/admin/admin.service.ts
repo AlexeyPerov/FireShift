@@ -9,16 +9,20 @@ import {SupportMessage} from "../shared/models/support-message.model";
 @Injectable()
 export class AdminService {
     fetchThreadsInfo(filter: Filter, pageTarget: PageTarget): SupportThreadInfo[] {
-        return [this.createMockSupportThreadInfo(0), this.createMockSupportThreadInfo(1),
-            this.createMockSupportThreadInfo(2), this.createMockSupportThreadInfo(3),
-            this.createMockSupportThreadInfo(4)];
+        return [this.createMockSupportThreadInfo("0"), this.createMockSupportThreadInfo("1"),
+            this.createMockSupportThreadInfo("2"), this.createMockSupportThreadInfo("3"),
+            this.createMockSupportThreadInfo("4")];
     }
 
-    fetchThread(id: String): SupportThread {
+    fetchThread(id: string): SupportThread {
         return new SupportThread({
-            info: this.createMockSupportThreadInfo(1),
-            contents: this.createMockSupportThreadsContents(1)
+            info: this.createMockSupportThreadInfo("1"),
+            contents: this.createMockSupportThreadsContents("1")
         });
+    }
+
+    fetchThreadInfo(id: string): SupportThreadInfo {
+        return this.createMockSupportThreadInfo(id);
     }
 
     markRead(id: string, read: boolean) {
@@ -33,7 +37,7 @@ export class AdminService {
         return true;
     }
 
-    private createMockSupportThreadInfo(id: number): SupportThreadInfo {
+    private createMockSupportThreadInfo(id: string): SupportThreadInfo {
         return new SupportThreadInfo({
             id: id.toString(),
             project: "AoC",
@@ -46,9 +50,9 @@ export class AdminService {
         });
     }
 
-    private createMockSupportThreadsContents(id: number): SupportThreadContents {
+    private createMockSupportThreadsContents(id: string): SupportThreadContents {
         return new SupportThreadContents({
-            id: "contents_" + id.toString(), messages: [
+            id: "contents_" + id, messages: [
                 new SupportMessage({authorId: "0", contents: "hello", time: Date.now()}),
                 new SupportMessage({
                     authorId: "1",

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 const kAdminUserId = "0";
 
 class SupportThreadInfo {
@@ -65,6 +67,35 @@ class SupportThreadInfo {
   final DateTime updateTime;
   final String preview;
   final String contentsId;
+
+  factory SupportThreadInfo.fromJson(Map<String, dynamic> json) {
+    return SupportThreadInfo(
+        id: json['id'],
+        project: json['project'],
+        senderId: json['senderId'],
+        receiverId: json['receiverId'],
+        starred: json['starred'],
+        unread: json['unread'],
+        archived: json['archived'],
+        subject: json['subject'],
+        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
+        preview: json['preview'],
+        contentsId: json['contentsId']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'project': project,
+        'senderId': senderId,
+        'receiverId': receiverId,
+        'starred': starred,
+        'unread': unread,
+        'archived': archived,
+        'subject': subject,
+        'updateTime': updateTime.microsecondsSinceEpoch,
+        'preview': preview,
+        'contentsId': contentsId
+      };
 }
 
 class SupportThreadContents {
@@ -78,6 +109,18 @@ class SupportThreadContents {
 
   final String id;
   final List<SupportMessage> messages;
+
+  factory SupportThreadContents.fromJson(Map<String, dynamic> jsonMap) {
+    Iterable l = json.decode(jsonMap['messages']);
+
+    return SupportThreadContents(
+        id: jsonMap['id'],
+        messages: List<SupportMessage>.from(
+            l.map((model) => SupportMessage.fromJson(model))));
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'messages': messages.map((model) => model.toJson())};
 }
 
 class SupportMessage {
@@ -92,6 +135,20 @@ class SupportMessage {
   final String authorId;
   final String contents;
   final DateTime time;
+
+  factory SupportMessage.fromJson(Map<String, dynamic> json) {
+    return SupportMessage(
+      authorId: json['authorId'],
+      contents: json['contents'],
+      time: DateTime.fromMicrosecondsSinceEpoch(json['time']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'authorId': authorId,
+        'contents': contents,
+        'time': time.microsecondsSinceEpoch
+      };
 }
 
 class SupportThread {
@@ -109,6 +166,15 @@ class SupportThread {
 
   final SupportThreadInfo info;
   final SupportThreadContents contents;
+
+  factory SupportThread.fromJson(Map<String, dynamic> json) {
+    return SupportThread(
+        info: SupportThreadInfo.fromJson(json['info']),
+        contents: SupportThreadContents.fromJson(json['contents']));
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'info': info.toJson(), 'contents': contents.toJson()};
 }
 
 class Filter {
@@ -126,12 +192,30 @@ class Filter {
         archived = FilterToggle.deactivated();
 
   Filter copy(
-          {FilterText contents, FilterToggle starred, FilterToggle unread, FilterToggle archived}) =>
+          {FilterText contents,
+          FilterToggle starred,
+          FilterToggle unread,
+          FilterToggle archived}) =>
       Filter(
           contents: contents ?? this.contents,
           starred: starred ?? this.starred,
           unread: unread ?? this.unread,
           archived: archived ?? this.archived);
+
+  factory Filter.fromJson(Map<String, dynamic> json) {
+    return Filter(
+        contents: FilterText.fromJson(json['contents']),
+        starred: FilterToggle.fromJson(json['starred']),
+        unread: FilterToggle.fromJson(json['unread']),
+        archived: FilterToggle.fromJson(json['archived']));
+  }
+
+  Map<String, dynamic> toJson() => {
+        'contents': contents.toJson(),
+        'starred': starred.toJson(),
+        'unread': unread.toJson(),
+        'archived': archived.toJson()
+      };
 }
 
 class FilterToggle {
@@ -156,6 +240,12 @@ class FilterToggle {
     else
       return FilterToggle.deactivated();
   }
+
+  factory FilterToggle.fromJson(Map<String, dynamic> json) {
+    return FilterToggle(json['value'], json['activated']);
+  }
+
+  Map<String, dynamic> toJson() => {'value': value, 'activated': activated};
 }
 
 class FilterText {
@@ -163,11 +253,15 @@ class FilterText {
 
   FilterText(this.value);
 
-  FilterText.activated(String newValue)
-      : value = newValue;
+  FilterText.activated(String newValue) : value = newValue;
 
-  FilterText.deactivated()
-      : value = "";
+  FilterText.deactivated() : value = "";
+
+  factory FilterText.fromJson(Map<String, dynamic> json) {
+    return FilterText(json['value']);
+  }
+
+  Map<String, dynamic> toJson() => {'value': value};
 }
 
 class PageTarget {
@@ -175,4 +269,11 @@ class PageTarget {
   final int pageSize;
 
   PageTarget({this.pageStart, this.pageSize});
+
+  factory PageTarget.fromJson(Map<String, dynamic> json) {
+    return PageTarget(pageStart: json['pageStart'], pageSize: json['pageSize']);
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'pageStart': pageStart, 'pageSize': pageSize};
 }

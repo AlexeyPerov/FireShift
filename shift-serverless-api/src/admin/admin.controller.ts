@@ -16,6 +16,11 @@ export class AdminController {
         return this.service.fetchThreadsInfo(filter, pageTarget);
     }
 
+    @Get('admin/fetch_thread_info?')
+    fetchThreadInfo(@Query('id') id : string) {
+        return this.service.fetchThreadInfo(id);
+    }
+
     @Get('admin/fetch_thread?')
     getMessages(@Query('id') id : string) {
         return this.service.fetchThread(id);
