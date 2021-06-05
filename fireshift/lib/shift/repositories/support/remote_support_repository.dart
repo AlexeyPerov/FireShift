@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fireshift/shift/app/app.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:fireshift/shift/entities/support_thread.dart';
@@ -28,25 +29,38 @@ class RemoteSupportRepository extends SupportRepository {
 
   @override
   Future<SupportThread> fetchThread(String id) async {
-    final response = await http.post(
-      Uri.parse("http://localhost:3000/dev/admin/fetch_thread"),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode({'id': id}),
-    );
+    final queryParameters = {'id': id};
+
+    final uri = Uri.http(
+        "localhost:3000", "/dev/admin/fetch_thread", queryParameters);
+
+    final response = await http
+        .get(uri, headers: {'Content-Type': 'application/json; charset=UTF-8'});
+
+    logger.d('response: ' + response.body);
 
     Map<String, dynamic> map = jsonDecode(response.body);
+
+    logger.d(map);
+
     return SupportThread.fromJson(map);
   }
 
   @override
   Future<List<SupportThreadInfo>> fetchThreadsInfo(
       Filter filter, PageTarget pageTarget) async {
-    final response = await http.post(
-      Uri.parse("http://localhost:3000/dev/admin/fetch_threads_info"),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(
-          {'filter': filter.toJson(), 'pageTarget': pageTarget.toJson()}),
-    );
+    final queryParameters = {
+      'filter': jsonEncode(filter.toJson()),
+      'pageTarget': jsonEncode(pageTarget.toJson())
+    };
+
+    final uri = Uri.http(
+        "localhost:3000", "/dev/admin/fetch_threads_info", queryParameters);
+
+    final response = await http
+        .get(uri, headers: {'Content-Type': 'application/json; charset=UTF-8'});
+
+    logger.d('response: ' + response.body);
 
     Iterable l = json.decode(response.body);
     List<SupportThreadInfo> infos = List<SupportThreadInfo>.from(
@@ -83,10 +97,16 @@ class RemoteSupportRepository extends SupportRepository {
   }
 
   Future<SupportThreadInfo> _fetchThreadInfo(String id) async {
-    final response = await http.post(
-      Uri.parse("http://localhost:3000/dev/admin/fetch_thread_info"),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(<String, String>{'id': id}),
+    final queryParameters = {
+      'id': id
+    };
+
+    final uri = Uri.http(
+        "localhost:3000", "/dev/admin/fetch_thread_info", queryParameters);
+
+    final response = await http.get(
+      uri,
+      headers: {'Content-Type': 'application/json; charset=UTF-8'}
     );
 
     Map<String, dynamic> map = jsonDecode(response.body);

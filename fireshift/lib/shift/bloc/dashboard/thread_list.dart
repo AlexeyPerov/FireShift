@@ -71,7 +71,9 @@ class ThreadListBloc {
         nextPageKey: nextPageKey,
         itemList: [...lastListingState?.itemList ?? [], ...newItems],
       );
-    } catch (e) {
+    } catch (e, stacktrace) {
+      logger.e('error', e, stacktrace);
+
       yield ThreadListState(
         error: e,
         nextPageKey: lastListingState?.nextPageKey,

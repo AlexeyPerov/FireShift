@@ -44,8 +44,11 @@ export class AdminService {
             senderId: "0",
             receiverId: "Support",
             subject: `User ${id}`,
-            preview: `Excepteur sint occaecat cupidatat $id non proident`,
+            preview: `Excepteur sint occaecat cupidatat ${id} non proident`,
             updateTime: Date.now(),
+            archived: Math.random() > 0.5,
+            starred: Math.random() > 0.5,
+            unread: Math.random() > 0.5,
             contentsId: "contents_" + id
         });
     }

@@ -2,6 +2,7 @@ import {Body, Controller, Get, Post, Query} from '@nestjs/common';
 import {AdminService} from "./admin.service";
 import {Filter} from "../shared/models/filter.model";
 import {PageTarget} from "../shared/models/page-target.model";
+import {SupportThread} from "../shared/models/support-thread.model";
 
 @Controller()
 export class AdminController {
@@ -11,8 +12,8 @@ export class AdminController {
     fetchThreadsInfo(
         @Query('filter') filter : Filter,
         @Query('pageTarget') pageTarget : PageTarget)  {
-        console.log(filter);
-        console.log(pageTarget);
+        console.log('filter: ' + filter);
+        console.log('pageTarget: ' + pageTarget);
         return this.service.fetchThreadsInfo(filter, pageTarget);
     }
 
@@ -22,7 +23,7 @@ export class AdminController {
     }
 
     @Get('admin/fetch_thread?')
-    getMessages(@Query('id') id : string) {
+    fetchThread(@Query('id') id : string): SupportThread {
         return this.service.fetchThread(id);
     }
 

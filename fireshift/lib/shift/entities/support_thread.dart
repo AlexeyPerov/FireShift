@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 const kAdminUserId = "0";
 
 class SupportThreadInfo {
@@ -74,12 +72,12 @@ class SupportThreadInfo {
         project: json['project'],
         senderId: json['senderId'],
         receiverId: json['receiverId'],
+        subject: json['subject'],
+        preview: json['preview'],
+        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
         starred: json['starred'],
         unread: json['unread'],
         archived: json['archived'],
-        subject: json['subject'],
-        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
-        preview: json['preview'],
         contentsId: json['contentsId']);
   }
 
@@ -111,7 +109,7 @@ class SupportThreadContents {
   final List<SupportMessage> messages;
 
   factory SupportThreadContents.fromJson(Map<String, dynamic> jsonMap) {
-    Iterable l = json.decode(jsonMap['messages']);
+    Iterable l = jsonMap['messages'];
 
     return SupportThreadContents(
         id: jsonMap['id'],
