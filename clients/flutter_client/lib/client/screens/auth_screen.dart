@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_client/client/app.dart';
-import 'package:flutter_client/client/screens/chat_screen.dart';
+import 'package:flutter_client/client/screens/pre_chat_screen.dart';
 import 'package:flutter_client/client/support_request_repository.dart';
 import 'package:flutter_client/client/utilities.dart';
 
@@ -87,11 +87,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _login(String userId) async {
     getIt<SupportRequestRepository>().setUserId(userId);
-    _navigateToNotes(context);
+    _navigateToPreChat(context);
   }
 
-  void _navigateToNotes(BuildContext context) {
+  void _navigateToPreChat(BuildContext context) {
     NavigatorUtilities.pushAndRemoveUntil(
-        context, (context) => ChatConnector());
+        context, (context) => PreChatScreen());
   }
 }

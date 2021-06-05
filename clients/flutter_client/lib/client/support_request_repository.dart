@@ -8,6 +8,7 @@ abstract class SupportRequestRepository {
 
   Future<List<SupportMessage>> fetchMessages();
   Future addMessage(SupportMessage message);
+  Future<int> getUnreadCount();
 }
 
 class MockSupportRequestRepository extends SupportRequestRepository {
@@ -40,6 +41,12 @@ class MockSupportRequestRepository extends SupportRequestRepository {
   Future addMessage(SupportMessage message) async {
     await Future.delayed(new Duration(milliseconds: 500));
     messages.add(message);
+  }
+
+  @override
+  Future<int> getUnreadCount() async {
+    await Future.delayed(new Duration(milliseconds: 2000));
+    return 42;
   }
 }
 
@@ -78,6 +85,13 @@ class RemoteSupportRequestRepository extends SupportRequestRepository {
       },
       body: jsonEncode(<String, String>{'message': messageString}),
     );
+  }
+
+  @override
+  Future<int> getUnreadCount() async {
+    final response = await http.get(
+        Uri.parse('http://localhost:3000/dev/messages/unread_count?id=' + _currentId));
+    return int.parse(response.body);
   }
 }
 
