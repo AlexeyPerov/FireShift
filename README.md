@@ -32,15 +32,22 @@ aws_access_key_id = YOUR_ACCESS_KEY
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
 ```
 #### Install dependencies
-* Run
+* Install serverless dependencies
 ```text
 npm install --save aws-serverless-express
 npm install --save aws-lambda
 npm install --save-dev serverless-plugin-typescript
 npm install --save-dev serverless-plugin-optimize
 npm install --save-dev serverless-offline plugin
+npm install --save-dev serverless
+```
+* Install mongose & dotenv dependencies
+```text
+npm install --save mongoose dotenv
 ```
 * Set "Incremental" to false in tsconfig.json
+#### Setup Mongo database
+Any Mongo hosting is fine but for ease of use you can set up the [MongoDB Atlas](https://www.mongodb.com/) Free Tier.
 #### Run
 * local
 ```text
