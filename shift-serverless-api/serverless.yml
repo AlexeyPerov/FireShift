@@ -9,6 +9,8 @@ plugins:
 provider:
  name: aws
  runtime: nodejs12.x
+ memorySize: 128
+ timeout: 10
 
 functions:
  main: # The name of the lambda function
