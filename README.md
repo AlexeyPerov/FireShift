@@ -43,8 +43,14 @@ npm install --save-dev serverless
 ```
 * Install mongose & dotenv dependencies
 ```text
-npm install --save mongoose dotenv
+npm install --save mongoose
+npm install --save dotenv
 ```
+* Create .env file
+```text
+# DB URI
+MONGO_URI="mongodb+srv://[login]:[password]@[url]/[dbname]?retryWrites=true&w=majority"
+ ```
 * Set "Incremental" to false in tsconfig.json
 #### Setup Mongo database
 Any Mongo hosting is fine but for ease of use you can set up the [MongoDB Atlas](https://www.mongodb.com/) Free Tier.
