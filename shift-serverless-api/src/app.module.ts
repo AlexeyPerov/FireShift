@@ -3,6 +3,8 @@ import {AdminModule} from "./admin/admin.module";
 import {MessagesModule} from "./messaging/messaging.module";
 import {MongooseModule} from "@nestjs/mongoose";
 
+require('dotenv').config()
+
 @Module({
     imports: [
         MongooseModule.forRoot(process.env.MONGO_URI, {

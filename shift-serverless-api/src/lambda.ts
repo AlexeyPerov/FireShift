@@ -6,18 +6,12 @@ import { eventContext } from 'aws-serverless-express/middleware';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import {AppModule} from "./app.module";
-import {Logger} from "@nestjs/common";
-import {mongo} from "mongoose";
 
-require('dotenv').config()
-const mongoose = require('mongoose');
 const express = require('express');
 
 const binaryMimeTypes: string[] = [];
 
 let cachedServer: Server;
-
-//let dbConnection = null;
 
 async function bootstrapServer(): Promise<Server> {
  if (!cachedServer) {
@@ -32,23 +26,7 @@ async function bootstrapServer(): Promise<Server> {
 
 export const handler: Handler = async (event: any, context: Context) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const logger = new Logger('bootstrap');
     cachedServer = await bootstrapServer();
-
-    /*if (dbConnection == null) {
-        dbConnection = mongoose.createConnection(process.env.MONGO_URI,
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            bufferCommands: false,
-            bufferMaxEntries: 0,
-        });
-
-        await dbConnection;
-
-        logger.log('connected to mongo')
-    }*/
-
     return proxy(cachedServer, event, context, 'PROMISE').promise;
 }
 
