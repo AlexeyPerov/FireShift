@@ -1,13 +1,19 @@
 import {Injectable} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
 import {PageTarget} from "../shared/models/page-target.model";
 import {Filter} from "../shared/models/filter.model";
-import {SupportThreadInfo} from "../shared/models/support-thread-info.model";
+import {SupportThreadInfo, SupportThreadInfoModel} from "../shared/models/support-thread-info.model";
 import {SupportThread} from "../shared/models/support-thread.model";
-import {SupportThreadContents} from "../shared/models/support_thread_contents.model";
+import {SupportThreadContents, SupportThreadContentsModel} from "../shared/models/support_thread_contents.model";
 import {SupportMessage} from "../shared/models/support-message.model";
 
 @Injectable()
 export class AdminService {
+    constructor(
+        @InjectModel('SupportThreadInfo') private infoModel: SupportThreadInfoModel,
+        @InjectModel('SupportThreadContents') private contentsModel: SupportThreadContentsModel
+    ) {}
+
     fetchThreadsInfo(filter: Filter, pageTarget: PageTarget): SupportThreadInfo[] {
         return [this.createMockSupportThreadInfo("0"), this.createMockSupportThreadInfo("1"),
             this.createMockSupportThreadInfo("2"), this.createMockSupportThreadInfo("3"),
@@ -38,7 +44,7 @@ export class AdminService {
     }
 
     private createMockSupportThreadInfo(id: string): SupportThreadInfo {
-        return new SupportThreadInfo({
+        return null; /*new SupportThreadInfo({
             id: id.toString(),
             project: "AoC",
             senderId: "0",
@@ -50,11 +56,11 @@ export class AdminService {
             starred: Math.random() > 0.5,
             unread: Math.random() > 0.5,
             contentsId: "contents_" + id
-        });
+        });*/
     }
 
     private createMockSupportThreadsContents(id: string): SupportThreadContents {
-        return new SupportThreadContents({
+        return null; /* new SupportThreadContents({
             id: "contents_" + id, messages: [
                 new SupportMessage({authorId: "0", contents: "hello", time: Date.now()}),
                 new SupportMessage({
@@ -66,6 +72,6 @@ export class AdminService {
                 }),
                 new SupportMessage({authorId: "0", contents: "thanks", time: Date.now()})
             ]
-        });
+        });*/
     }
 }

@@ -7,6 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import {AppModule} from "./app.module";
 import {Logger} from "@nestjs/common";
+import {mongo} from "mongoose";
 
 require('dotenv').config()
 const mongoose = require('mongoose');
@@ -16,7 +17,7 @@ const binaryMimeTypes: string[] = [];
 
 let cachedServer: Server;
 
-let conn = null;
+//let dbConnection = null;
 
 async function bootstrapServer(): Promise<Server> {
  if (!cachedServer) {
@@ -34,8 +35,8 @@ export const handler: Handler = async (event: any, context: Context) => {
     const logger = new Logger('bootstrap');
     cachedServer = await bootstrapServer();
 
-    if (conn == null) {
-        conn = mongoose.createConnection(process.env.MONGO_URI,
+    /*if (dbConnection == null) {
+        dbConnection = mongoose.createConnection(process.env.MONGO_URI,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
@@ -43,10 +44,10 @@ export const handler: Handler = async (event: any, context: Context) => {
             bufferMaxEntries: 0,
         });
 
-        await conn;
+        await dbConnection;
 
         logger.log('connected to mongo')
-    }
+    }*/
 
     return proxy(cachedServer, event, context, 'PROMISE').promise;
 }
