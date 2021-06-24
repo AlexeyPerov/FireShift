@@ -11,9 +11,10 @@ export class MessagingController {
     return this.service.getUnreadMessagesCount(id);
   }
 
+  // TODO fix naming
   @Get('messages/fetch?')
   getMessages(@Query('id') id: string) {
-    return this.service.getMessages(id);
+    return this.service.readMessages(id);
   }
 
   @Post('messages/add')

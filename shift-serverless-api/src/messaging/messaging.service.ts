@@ -12,13 +12,39 @@ export class MessagingService {
     private contentsModel: SupportThreadContentsModel,
   ) { }
 
-  getUnreadMessagesCount(userId: string): number {
-    return 0;
+  async getUnreadMessagesCount(userId: string): Promise<number> {
+    const contents = await this.findThreadContents(userId);
+    const count = contents.messages.filter((obj) => obj.read === false).length;
+    return count;
   }
 
-  async getMessages(userId: string): Promise<SupportMessage[]> {
-    const contents = await this.findThreadContents(userId);
-    return contents.messages;
+  async readMessages(userId: string): Promise<SupportMessage[]> {
+    const foundThreadInfo = await this.infoModel.findOne({
+      threadOwnerId: userId,
+    });
+
+    if (!foundThreadInfo) {
+      throw new Error("Error finding thread");
+    }
+
+    const foundContents = await this.contentsModel.findOne({ _id: foundThreadInfo.contentsId });
+
+    if (!foundContents) {
+      throw new Error("Unable to find thread contents");
+    }
+
+    await this.contentsModel.updateOne(
+      {
+        _id: foundThreadInfo.contentsId,
+        messages: {$elemMatch: {authorId: userId}}
+      },
+      {
+        $set: { 'messages.$[elem].read': true }
+      },
+      { "arrayFilters": [{ "elem.authorId": userId }], "multi": true }
+    );
+
+    return foundContents.messages;
   }
 
   async addMessage(threadOwnerId: string, messageAuthorId: string, contents: string): Promise<boolean> {
@@ -31,7 +57,7 @@ export class MessagingService {
       this.createNewThread(threadOwnerId, messageAuthorId, contents);
     } else {
       console.log("existing thread has been found");
-      await this.updateThread(threadOwnerId, messageAuthorId, contents);
+      await this.updateThread(foundThreadInfo.contentsId, threadOwnerId, messageAuthorId, contents);
     }
 
     return true;
@@ -43,7 +69,8 @@ export class MessagingService {
         {
           authorId: messageAuthorId,
           contents: contents,
-          time: Date.now()
+          time: Date.now(),
+          read: false
         }
       ]
     };
@@ -60,7 +87,6 @@ export class MessagingService {
       receiverId: "0",
       starred: false,
       archived: false,
-      unread: false,
       subject: "Support Request",
       updateTime: Date.now(),
       preview: contents.length >= 24 ? contents.substr(0, 24) : contents,
@@ -71,20 +97,27 @@ export class MessagingService {
     await addedInfo.save();
   }
 
-  private async updateThread(threadOwnerId: string, messageAuthorId: string, contents: string) {
+  private async updateThread(contentsId: string, threadOwnerId: string, messageAuthorId: string, contents: string) {
     await this.contentsModel.updateOne(
+      {
+        _id: contentsId
+      },
       {
         $push: {
           messages: [{
             authorId: messageAuthorId,
             contents: contents,
-            time: Date.now()
+            time: Date.now(),
+            read: false
           }]
         }
       },
     );
 
     await this.infoModel.updateOne(
+      {
+        threadOwnerId: threadOwnerId
+      },
       {
         preview: contents.length >= 24 ? contents.substr(0, 24) : contents,
         updateTime: Date.now()

@@ -5,8 +5,7 @@ export interface SupportThreadInfo extends Document {
   project: string;
   threadOwnerId: string;
   receiverId: string;
-  starred: boolean;
-  unread: boolean;
+  starred: boolean;  
   archived: boolean;
   subject: string;
   updateTime: number;
