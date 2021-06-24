@@ -1,9 +1,10 @@
-import {SupportMessage} from "./support-message.model";
+import { SupportMessage } from './support-message.model';
 
 export interface SupportThreadContents {
-    _id: string;
-    messages: SupportMessage[];
+  _id: string;
+  messages: SupportMessage[];
 }
 
-export interface SupportThreadContentsModel extends SupportThreadContents, Document {
-}
+export interface SupportThreadContentsModel
+  extends SupportThreadContents,
+    Document {}

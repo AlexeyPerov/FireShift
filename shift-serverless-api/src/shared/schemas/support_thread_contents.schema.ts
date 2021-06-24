@@ -1,8 +1,7 @@
-import {Schema} from "mongoose";
+import { Schema } from 'mongoose';
 
 const SupportThreadContentsSchema = new Schema({
-    messages: []
+  messages: [],
 });
-
 
 export default SupportThreadContentsSchema;

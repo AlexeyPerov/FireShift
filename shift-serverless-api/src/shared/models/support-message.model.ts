@@ -1,8 +1,5 @@
 export interface SupportMessage {
-    authorId: string;
-    contents: string;
-    time: number;
+  authorId: string;
+  contents: string;
+  time: number;
 }
-
-
-

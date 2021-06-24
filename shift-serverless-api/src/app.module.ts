@@ -1,20 +1,22 @@
 import { Module } from '@nestjs/common';
-import {AdminModule} from "./admin/admin.module";
-import {MessagesModule} from "./messaging/messaging.module";
-import {MongooseModule} from "@nestjs/mongoose";
+import { AdminModule } from './admin/admin.module';
+import { MessagesModule } from './messaging/messaging.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
-require('dotenv').config()
+require('dotenv').config();
 
 @Module({
-    imports: [
-        MongooseModule.forRoot(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            bufferCommands: false,
-            bufferMaxEntries: 0,
-        }),
-        MessagesModule, AdminModule],
-    controllers: [],
-    providers: [],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      bufferCommands: false,
+      bufferMaxEntries: 0,
+    }),
+    MessagesModule,
+    AdminModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

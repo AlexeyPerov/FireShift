@@ -1,7 +1,7 @@
 export class FilterText {
-    public value: string;
+  public value: string;
 
-    public constructor(init?:Partial<FilterText>) {
-        Object.assign(this, init);
-    }
+  public constructor(init?: Partial<FilterText>) {
+    Object.assign(this, init);
+  }
 }
