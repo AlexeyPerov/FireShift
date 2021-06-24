@@ -3,7 +3,7 @@ import { Document, DocumentQuery, Model } from 'mongoose';
 export interface SupportThreadInfo extends Document {
   _id: string;
   project: string;
-  senderId: string;
+  threadOwnerId: string;
   receiverId: string;
   starred: boolean;
   unread: boolean;

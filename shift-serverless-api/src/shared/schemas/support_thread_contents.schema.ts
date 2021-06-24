@@ -1,4 +1,5 @@
-import { Schema } from 'mongoose';
+import * as mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const SupportThreadContentsSchema = new Schema({
   messages: [],

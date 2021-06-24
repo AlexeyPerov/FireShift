@@ -4,7 +4,7 @@ class SupportThreadInfo {
   SupportThreadInfo(
       {this.id,
       this.project,
-      this.senderId,
+      this.threadOwnerId,
       this.receiverId,
       this.starred,
       this.unread,
@@ -18,7 +18,7 @@ class SupportThreadInfo {
       : this(
             id: ticketInfo.id,
             project: ticketInfo.project,
-            senderId: ticketInfo.senderId,
+            threadOwnerId: ticketInfo.threadOwnerId,
             receiverId: ticketInfo.receiverId,
             starred: ticketInfo.starred,
             unread: ticketInfo.unread,
@@ -31,7 +31,7 @@ class SupportThreadInfo {
   SupportThreadInfo copy(
           {String id,
           String projectId,
-          String senderId,
+          String threadOwnerId,
           String receiverId,
           bool starred,
           bool unread,
@@ -43,7 +43,7 @@ class SupportThreadInfo {
       SupportThreadInfo(
         id: id ?? this.id,
         project: projectId ?? this.project,
-        senderId: senderId ?? this.senderId,
+        threadOwnerId: threadOwnerId ?? this.threadOwnerId,
         receiverId: receiverId ?? this.receiverId,
         starred: starred ?? this.starred,
         unread: unread ?? this.unread,
@@ -56,7 +56,7 @@ class SupportThreadInfo {
 
   final String id;
   final String project;
-  final String senderId;
+  final String threadOwnerId;
   final String receiverId;
   final bool starred;
   final bool unread;
@@ -70,7 +70,7 @@ class SupportThreadInfo {
     return SupportThreadInfo(
         id: json['id'],
         project: json['project'],
-        senderId: json['senderId'],
+        threadOwnerId: json['threadOwnerId'],
         receiverId: json['receiverId'],
         subject: json['subject'],
         preview: json['preview'],
@@ -84,7 +84,7 @@ class SupportThreadInfo {
   Map<String, dynamic> toJson() => {
         'id': id,
         'project': project,
-        'senderId': senderId,
+        'threadOwnerId': threadOwnerId,
         'receiverId': receiverId,
         'starred': starred,
         'unread': unread,

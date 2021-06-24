@@ -14,9 +14,9 @@ class RemoteSupportRepository extends SupportRepository {
 
   @override
   Future<SupportThread> addThreadMessage(
-      String id, String senderId, String response) async {
+      String id, String threadOwnerId, String response) async {
     var message = SupportMessage(
-        authorId: senderId, contents: response, time: DateTime.now());
+        authorId: threadOwnerId, contents: response, time: DateTime.now());
     var messageString = json.encode(message.toJson());
     await http.post(
       Uri.parse("http://localhost:3000/dev/messages/add"),

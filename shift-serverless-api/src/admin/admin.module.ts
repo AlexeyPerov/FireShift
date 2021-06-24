@@ -14,6 +14,6 @@ import SupportThreadContentsSchema from '../shared/schemas/support_thread_conten
   ],
   controllers: [AdminController],
   providers: [AdminService],
-  exports: [MongooseModule],
+  exports: [MongooseModule]
 })
 export class AdminModule {}

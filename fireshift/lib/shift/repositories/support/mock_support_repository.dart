@@ -21,7 +21,7 @@ class MockSupportRepository extends SupportRepository {
 
   @override
   Future<SupportThread> addThreadMessage(
-      String id, String senderId, String response) async {
+      String id, String threadOwnerId, String response) async {
     await fakeDelay();
 
     var thread = threads.firstWhere((x) => x.info.id == id);
@@ -32,7 +32,7 @@ class MockSupportRepository extends SupportRepository {
 
     var newThread = SupportThread.clone(thread);
     newThread.contents.messages.add(SupportMessage(
-        authorId: senderId, contents: response, time: DateTime.now()));
+        authorId: threadOwnerId, contents: response, time: DateTime.now()));
 
     var index = threads.indexOf(thread);
     threads[index] = newThread;
@@ -64,7 +64,7 @@ class MockSupportRepository extends SupportRepository {
     var filteredThreads = threads
         .where((thread) =>
             thread.info.subject.contains(filter.contents.value) ||
-            thread.info.senderId.contains(filter.contents.value) ||
+            thread.info.threadOwnerId.contains(filter.contents.value) ||
             thread.info.project.contains(filter.contents.value) ||
             thread.contents.messages.any(
                 (message) => message.contents.contains(filter.contents.value)))
@@ -137,7 +137,7 @@ SupportThreadInfo createMockSupportThreadInfo(String projectId, int id) {
   return SupportThreadInfo(
       id: id.toString(),
       project: projectId,
-      senderId: 'User ' + id.toString(),
+      threadOwnerId: 'User ' + id.toString(),
       receiverId: 'Support',
       starred: RandomUtilities.hit(0.5),
       unread: RandomUtilities.hit(0.85),

@@ -3,7 +3,7 @@ import * as paginate from '../../shared/utils/paginate';
 
 const SupportThreadInfoSchema = new Schema({
   project: String,
-  senderId: String,
+  threadOwnerId: String,
   receiverId: String,
   starred: Boolean,
   unread: Boolean,

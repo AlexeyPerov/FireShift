@@ -18,7 +18,11 @@ export class MessagingController {
 
   @Post('messages/add')
   addMessage(@Body() message: Message) {
-    console.log(message.authorId + ': ' + message.contents);
-    return this.service.addMessage(message.authorId, message.contents);
+    console.log(message);
+    return this.service.addMessage(
+      message.threadOwnerId,
+      message.authorId,
+      message.contents,
+    );
   }
 }

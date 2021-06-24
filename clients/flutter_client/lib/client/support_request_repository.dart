@@ -96,20 +96,23 @@ class RemoteSupportRequestRepository extends SupportRequestRepository {
 }
 
 class SupportMessage {
-  SupportMessage({this.authorId, this.contents, this.time});
+  SupportMessage({this.threadOwnerId, this.authorId, this.contents, this.time});
 
   SupportMessage.clone(SupportMessage message)
       : this(
+            threadOwnerId: message.threadOwnerId,
             authorId: message.authorId,
             contents: message.contents,
             time: message.time);
 
+  final String threadOwnerId;
   final String authorId;
   final String contents;
   final DateTime time;
 
   factory SupportMessage.fromJson(Map<String, dynamic> json) {
     return SupportMessage(
+      threadOwnerId: json['threadOwnerId'],
       authorId: json['authorId'],
       contents: json['contents'],
       time: DateTime.fromMicrosecondsSinceEpoch(json['time']),

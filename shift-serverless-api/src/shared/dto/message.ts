@@ -1,4 +1,5 @@
 export class Message {
+  public threadOwnerId: string;
   public authorId: string;
   public contents: string;
 

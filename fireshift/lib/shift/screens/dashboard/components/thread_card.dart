@@ -94,7 +94,7 @@ class SupportThreadInfoCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Expanded(child: Text(threadInfo.senderId)),
+                    Expanded(child: Text(threadInfo.threadOwnerId)),
                     Text(dateFormatter.format(threadInfo.updateTime),
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6
