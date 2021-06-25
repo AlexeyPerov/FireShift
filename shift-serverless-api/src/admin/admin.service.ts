@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PageTarget } from '../shared/models/page-target.model';
 import { Filter } from '../shared/models/filter.model';
 import {
+  PaginateOptions,
   SupportThreadInfo,
   SupportThreadInfoModel,
 } from '../shared/models/support-thread-info.model';
@@ -32,15 +33,13 @@ export class AdminService {
     const query = { ...contentsQuery, ...archivedQuery, ...starredQuery, ...unreadQuery };
 
     const page = pageTarget.pageStart / pageTarget.pageSize;
+    const limit = pageTarget.pageSize;
 
-    const options = {
+    const options : PaginateOptions = {
       page: page,
-      limit: 12,
+      limit: limit,
       sort: 'updateTime'
     };
-
-    console.log('calling paginate for ' + page + " / " + pageTarget.pageSize);
-    console.log(query);
 
     const infosWithPagination = await this.infoModel.paginate(query, options);
     return infosWithPagination.all;    

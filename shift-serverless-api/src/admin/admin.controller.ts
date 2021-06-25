@@ -11,12 +11,10 @@ export class AdminController {
   @Get('admin/fetch_threads_info?')
   fetchThreadsInfo(
     @Query('filter') filter: Filter,
-    @Query('pageStart') pageStart: number,
-    @Query('pageSize') pageSize: number,
-  ) {
-    console.log('filter: ' + filter);
-    const pageTarget = new PageTarget({pageStart: pageStart, pageSize: pageSize});
-    console.log('pageTarget: ' + pageTarget);
+    @Query('pageStart') pageStart,
+    @Query('pageSize') pageSize,
+  ) {    
+    const pageTarget = new PageTarget({pageStart: parseInt(pageStart), pageSize: parseInt(pageSize)});
     return this.service.fetchThreadsInfo(filter, pageTarget);
   }
 
