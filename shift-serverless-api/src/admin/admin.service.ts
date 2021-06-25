@@ -25,12 +25,15 @@ export class AdminService {
     filter: Filter,
     pageTarget: PageTarget,
   ): Promise<SupportThreadInfo[]> {
-    const contentsQuery = filter.contents?.value ? { preview: new RegExp(filter.contents.value, 'i') } : {};
+    const ownerSearchQuery = filter.search?.value ? { threadOwnerId: new RegExp(filter.search.value, 'i') } : {};
+    const projectSearchQuery = filter.search?.value ? { project: new RegExp(filter.search.value, 'i') } : {};
+    const subjectSearchQuery = filter.search?.value ? { subject: new RegExp(filter.search.value, 'i') } : {};
+
     const archivedQuery = filter.archived?.activated ? {archived: filter.archived.value} : {};
     const starredQuery = filter.starred?.activated ? {starred: filter.starred.value} : {};
     const unreadQuery = filter.unread?.activated ? {unread: filter.unread.value} : {};
     
-    const query = { ...contentsQuery, ...archivedQuery, ...starredQuery, ...unreadQuery };
+    const query = { ...ownerSearchQuery, ...projectSearchQuery, ...subjectSearchQuery, ...archivedQuery, ...starredQuery, ...unreadQuery };
 
     const page = pageTarget.pageStart / pageTarget.pageSize;
     const limit = pageTarget.pageSize;

@@ -2,7 +2,8 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { Filter } from '../shared/models/filter.model';
 import { PageTarget } from '../shared/models/page-target.model';
-import { SupportThread } from '../shared/models/support-thread.model';
+import { FilterToggle } from '../shared/models/filter-toggle.model';
+import { FilterText } from '../shared/models/filter-text.model';
 
 @Controller()
 export class AdminController {
@@ -10,11 +11,19 @@ export class AdminController {
 
   @Get('admin/fetch_threads_info?')
   fetchThreadsInfo(
-    @Query('filter') filter: Filter,
+    @Query('search') search,
+    @Query('starred') starred,
+    @Query('unread') unread,
+    @Query('archived') archived,
     @Query('pageStart') pageStart,
     @Query('pageSize') pageSize,
   ) {    
     const pageTarget = new PageTarget({pageStart: parseInt(pageStart), pageSize: parseInt(pageSize)});
+    const filterText = search ? new FilterText({value: search}) : null;
+    const filterStarred = starred ? new FilterToggle({activated: true, value: starred}) : null;
+    const filterUnread = unread ? new FilterToggle({activated: true, value: unread}) : null;
+    const filterArchived = archived ? new FilterToggle({activated: true, value: archived}) : null;
+    const filter = new Filter({search: filterText, starred: filterStarred, unread: filterUnread, archived: filterArchived});
     return this.service.fetchThreadsInfo(filter, pageTarget);
   }
 
