@@ -3,8 +3,6 @@ import {
   SupportThreadInfo,
 } from '../models/support-thread-info.model';
 
-export const paginationLimit = 12;
-
 function paginate(
   query,
   options: PaginateOptions,

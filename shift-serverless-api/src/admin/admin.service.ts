@@ -18,73 +18,116 @@ export class AdminService {
     @InjectModel('SupportThreadInfo') private infoModel: SupportThreadInfoModel,
     @InjectModel('SupportThreadContents')
     private contentsModel: SupportThreadContentsModel,
-  ) {}
+  ) { }
 
-  fetchThreadsInfo(
+  async fetchThreadsInfo(
     filter: Filter,
     pageTarget: PageTarget,
-  ): SupportThreadInfo[] {
-    return [
-      this.createMockSupportThreadInfo('0'),
-      this.createMockSupportThreadInfo('1'),
-      this.createMockSupportThreadInfo('2'),
-      this.createMockSupportThreadInfo('3'),
-      this.createMockSupportThreadInfo('4'),
-    ];
+  ): Promise<SupportThreadInfo[]> {
+    const contentsQuery = filter.contents?.value ? { preview: new RegExp(filter.contents.value, 'i') } : {};
+    const archivedQuery = filter.archived?.activated ? {archived: filter.archived.value} : {};
+    const starredQuery = filter.starred?.activated ? {starred: filter.starred.value} : {};
+    const unreadQuery = filter.unread?.activated ? {unread: filter.unread.value} : {};
+    
+    const query = { ...contentsQuery, ...archivedQuery, ...starredQuery, ...unreadQuery };
+
+    const page = pageTarget.pageStart / pageTarget.pageSize;
+
+    const options = {
+      page: page,
+      limit: 12,
+      sort: 'updateTime'
+    };
+
+    console.log('calling paginate for ' + page + " / " + pageTarget.pageSize);
+    console.log(query);
+
+    const infosWithPagination = await this.infoModel.paginate(query, options);
+    return infosWithPagination.all;    
   }
 
-  fetchThread(id: string): SupportThread {
+  async fetchThread(id: string): Promise<SupportThread> {
+    const foundThreadInfo = await this.infoModel.findOne({
+      threadOwnerId: id,
+    });
+
+    if (!foundThreadInfo) {
+      throw new Error("Error finding thread");
+    }
+
+    const foundContents = await this.contentsModel.findOne({ _id: foundThreadInfo.contentsId });
+
+    if (!foundContents) {
+      throw new Error("Unable to find thread contents");
+    }
+
     return new SupportThread({
-      info: this.createMockSupportThreadInfo('1'),
-      contents: this.createMockSupportThreadsContents('1'),
+      info: foundThreadInfo,
+      contents: foundContents,
     });
   }
 
-  fetchThreadInfo(id: string): SupportThreadInfo {
-    return this.createMockSupportThreadInfo(id);
+  async fetchThreadInfo(id: string): Promise<SupportThreadInfo> {
+    const foundThreadInfo = await this.infoModel.findOne({
+      threadOwnerId: id,
+    });
+
+    if (!foundThreadInfo) {
+      throw new Error("Error finding thread");
+    }
+
+    return foundThreadInfo;
   }
 
-  markRead(id: string, read: boolean) {
-    return true;
+  async markRead(id: string, read: boolean) {
+    const foundThreadInfo = await this.infoModel.findOne({
+      threadOwnerId: id,
+    });
+
+    if (!foundThreadInfo) {
+      throw new Error("Error finding thread");
+    }
+
+    await this.infoModel.updateOne(
+      {
+        threadOwnerId: id
+      },
+      {
+        unread: !read
+      }
+    );
+
+    await this.contentsModel.updateOne(
+      {
+        _id: foundThreadInfo.contentsId,
+        messages: {$elemMatch: {authorId: id}}
+      },
+      {
+        $set: { 'messages.$[elem].read': true }
+      },
+      { "arrayFilters": [{ "elem.authorId": id }], "multi": true }
+    );
   }
 
-  archive(id: string, archive: boolean) {
-    return true;
+  async archive(id: string, archive: boolean) {
+    await this.infoModel.updateOne(
+      {
+        threadOwnerId: id
+      },
+      {
+        archived: archive
+      }
+    );
   }
 
-  star(id: string, star: boolean) {
-    return true;
-  }
-
-  private createMockSupportThreadInfo(id: string): SupportThreadInfo {
-    return null; /*new SupportThreadInfo({
-            id: id.toString(),
-            project: "AoC",
-            senderId: "0",
-            receiverId: "Support",
-            subject: `User ${id}`,
-            preview: `Excepteur sint occaecat cupidatat ${id} non proident`,
-            updateTime: Date.now(),
-            archived: Math.random() > 0.5,
-            starred: Math.random() > 0.5,
-            unread: Math.random() > 0.5,
-            contentsId: "contents_" + id
-        });*/
-  }
-
-  private createMockSupportThreadsContents(id: string): SupportThreadContents {
-    return null; /* new SupportThreadContents({
-            id: "contents_" + id, messages: [
-                new SupportMessage({authorId: "0", contents: "hello", time: Date.now()}),
-                new SupportMessage({
-                    authorId: "1",
-                    contents: 'Excepteur sint occaecat cupidatat $id non proident.\n' +
-                        'sunt in culpa qui officia deserunt mollit anim id est laborum' +
-                        'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-                    time: Date.now()
-                }),
-                new SupportMessage({authorId: "0", contents: "thanks", time: Date.now()})
-            ]
-        });*/
+  async star(id: string, star: boolean) {
+    await this.infoModel.updateOne(
+      {
+        threadOwnerId: id
+      },
+      {
+        starred: star
+      }
+    );
   }
 }

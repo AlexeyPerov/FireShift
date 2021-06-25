@@ -77,42 +77,42 @@ class RemoteSupportRequestRepository extends SupportRequestRepository {
 
   @override
   Future addMessage(SupportMessage message) async {
-    var messageString = json.encode(message.toJson());
     return http.post(
       Uri.parse("http://localhost:3000/dev/messages/add"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{'message': messageString}),
+      body: jsonEncode(<String, String>{
+        'threadOwnerId': _currentId,
+        'authorId': message.authorId,
+        'contents': message.contents
+      }),
     );
   }
 
   @override
   Future<int> getUnreadCount() async {
-    final response = await http.get(
-        Uri.parse('http://localhost:3000/dev/messages/unread_count?id=' + _currentId));
+    final response = await http.get(Uri.parse(
+        'http://localhost:3000/dev/messages/unread_count?id=' + _currentId));
     return int.parse(response.body);
   }
 }
 
 class SupportMessage {
-  SupportMessage({this.threadOwnerId, this.authorId, this.contents, this.time});
+  SupportMessage({this.authorId, this.contents, this.time});
 
   SupportMessage.clone(SupportMessage message)
       : this(
-            threadOwnerId: message.threadOwnerId,
             authorId: message.authorId,
             contents: message.contents,
             time: message.time);
 
-  final String threadOwnerId;
   final String authorId;
   final String contents;
   final DateTime time;
 
   factory SupportMessage.fromJson(Map<String, dynamic> json) {
     return SupportMessage(
-      threadOwnerId: json['threadOwnerId'],
       authorId: json['authorId'],
       contents: json['contents'],
       time: DateTime.fromMicrosecondsSinceEpoch(json['time']),

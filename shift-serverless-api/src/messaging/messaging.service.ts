@@ -14,7 +14,7 @@ export class MessagingService {
 
   async getUnreadMessagesCount(userId: string): Promise<number> {
     const contents = await this.findThreadContents(userId);
-    const count = contents.messages.filter((obj) => obj.read === false).length;
+    const count = contents.messages.filter((obj) => obj.read === false && obj.authorId === "0").length;
     return count;
   }
 
@@ -36,12 +36,12 @@ export class MessagingService {
     await this.contentsModel.updateOne(
       {
         _id: foundThreadInfo.contentsId,
-        messages: {$elemMatch: {authorId: userId}}
+        messages: {$elemMatch: {authorId: "0"}}
       },
       {
         $set: { 'messages.$[elem].read': true }
       },
-      { "arrayFilters": [{ "elem.authorId": userId }], "multi": true }
+      { "arrayFilters": [{ "elem.authorId": "0" }], "multi": true }
     );
 
     return foundContents.messages;
@@ -119,6 +119,7 @@ export class MessagingService {
         threadOwnerId: threadOwnerId
       },
       {
+        unread: true,
         preview: contents.length >= 24 ? contents.substr(0, 24) : contents,
         updateTime: Date.now()
       }

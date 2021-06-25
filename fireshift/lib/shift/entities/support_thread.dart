@@ -122,30 +122,34 @@ class SupportThreadContents {
 }
 
 class SupportMessage {
-  SupportMessage({this.authorId, this.contents, this.time});
+  SupportMessage({this.authorId, this.contents, this.time, this.read});
 
   SupportMessage.clone(SupportMessage message)
       : this(
             authorId: message.authorId,
             contents: message.contents,
-            time: message.time);
+            time: message.time,
+            read: message.read);
 
   final String authorId;
   final String contents;
   final DateTime time;
+  final bool read;
 
   factory SupportMessage.fromJson(Map<String, dynamic> json) {
     return SupportMessage(
       authorId: json['authorId'],
       contents: json['contents'],
       time: DateTime.fromMicrosecondsSinceEpoch(json['time']),
+      read: json['read']
     );
   }
 
   Map<String, dynamic> toJson() => {
         'authorId': authorId,
         'contents': contents,
-        'time': time.microsecondsSinceEpoch
+        'time': time.microsecondsSinceEpoch,
+        'read': read
       };
 }
 

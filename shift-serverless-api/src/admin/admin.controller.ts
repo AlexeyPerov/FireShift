@@ -11,9 +11,11 @@ export class AdminController {
   @Get('admin/fetch_threads_info?')
   fetchThreadsInfo(
     @Query('filter') filter: Filter,
-    @Query('pageTarget') pageTarget: PageTarget,
+    @Query('pageStart') pageStart: number,
+    @Query('pageSize') pageSize: number,
   ) {
     console.log('filter: ' + filter);
+    const pageTarget = new PageTarget({pageStart: pageStart, pageSize: pageSize});
     console.log('pageTarget: ' + pageTarget);
     return this.service.fetchThreadsInfo(filter, pageTarget);
   }
@@ -24,22 +26,22 @@ export class AdminController {
   }
 
   @Get('admin/fetch_thread?')
-  fetchThread(@Query('id') id: string): SupportThread {
+  fetchThread(@Query('id') id: string) {
     return this.service.fetchThread(id);
   }
 
   @Post('admin/mark_read')
-  markRead(@Body() id: string, read: boolean) {
-    return this.service.markRead(id, read);
+  markRead(@Body() body) {
+    return this.service.markRead(body.id, body.read);
   }
 
   @Post('admin/archive')
-  archive(@Body() id: string, archive: boolean) {
-    return this.service.archive(id, archive);
+  archive(@Body() body) {
+    return this.service.archive(body.id, body.archive);
   }
 
   @Post('admin/star')
-  star(@Body() id: string, star: boolean) {
-    return this.service.star(id, star);
+  star(@Body() body) {
+    return this.service.star(body.id, body.star);
   }
 }

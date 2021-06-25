@@ -32,7 +32,7 @@ class MockSupportRepository extends SupportRepository {
 
     var newThread = SupportThread.clone(thread);
     newThread.contents.messages.add(SupportMessage(
-        authorId: threadOwnerId, contents: response, time: DateTime.now()));
+        authorId: threadOwnerId, contents: response, time: DateTime.now(), read: true));
 
     var index = threads.indexOf(thread);
     threads[index] = newThread;
