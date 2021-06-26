@@ -14,45 +14,53 @@ class RemoteSupportRepository extends SupportRepository {
 
   @override
   Future<SupportThread> addThreadMessage(
-      String id, String threadOwnerId, String response) async {
-    var message = SupportMessage(
-        authorId: threadOwnerId, contents: response, time: DateTime.now());
-    var messageString = json.encode(message.toJson());
+      String threadOwnerId, String response) async {
     await http.post(
       Uri.parse("http://localhost:3000/dev/messages/add"),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode({'message': messageString}),
+      body: jsonEncode({
+        'threadOwnerId': threadOwnerId,
+        'authorId': '0',
+        'contents': response
+      }),
     );
 
-    return fetchThread(id);
+    return fetchThread(threadOwnerId);
   }
 
   @override
   Future<SupportThread> fetchThread(String id) async {
-    final queryParameters = {'id': id};
+    final queryParameters = <String, dynamic>{'id': id};
 
-    final uri = Uri.http(
-        "localhost:3000", "/dev/admin/fetch_thread", queryParameters);
+    final uri =
+        Uri.http("localhost:3000", "/dev/admin/fetch_thread", queryParameters);
 
     final response = await http
         .get(uri, headers: {'Content-Type': 'application/json; charset=UTF-8'});
 
-    logger.d('response: ' + response.body);
-
     Map<String, dynamic> map = jsonDecode(response.body);
-
-    logger.d(map);
-
     return SupportThread.fromJson(map);
   }
 
   @override
   Future<List<SupportThreadInfo>> fetchThreadsInfo(
       Filter filter, PageTarget pageTarget) async {
-    final queryParameters = {
-      'filter': jsonEncode(filter.toJson()),
-      'pageTarget': jsonEncode(pageTarget.toJson())
+    final queryParameters = <String, dynamic>{
+      'pageStart': pageTarget.pageStart.toString(),
+      'pageSize': pageTarget.pageSize.toString(),
     };
+
+    if (filter.contents.value.isNotEmpty)
+      queryParameters['search'] = filter.contents.value;
+
+    if (filter.starred.activated)
+      queryParameters['starred'] = filter.starred.value.toString();
+
+    if (filter.unread.activated)
+      queryParameters['unread'] = filter.unread.value.toString();
+
+    if (filter.archived.activated)
+      queryParameters['archived'] = filter.archived.value.toString();
 
     final uri = Uri.http(
         "localhost:3000", "/dev/admin/fetch_threads_info", queryParameters);
@@ -97,17 +105,13 @@ class RemoteSupportRepository extends SupportRepository {
   }
 
   Future<SupportThreadInfo> _fetchThreadInfo(String id) async {
-    final queryParameters = {
-      'id': id
-    };
+    final queryParameters = <String, dynamic>{'id': id};
 
     final uri = Uri.http(
         "localhost:3000", "/dev/admin/fetch_thread_info", queryParameters);
 
-    final response = await http.get(
-      uri,
-      headers: {'Content-Type': 'application/json; charset=UTF-8'}
-    );
+    final response = await http
+        .get(uri, headers: {'Content-Type': 'application/json; charset=UTF-8'});
 
     Map<String, dynamic> map = jsonDecode(response.body);
     return SupportThreadInfo.fromJson(map);

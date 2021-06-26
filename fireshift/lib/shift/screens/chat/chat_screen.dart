@@ -102,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     size: 24.0),
                                 onPressed: () => {
                                       BlocProvider.of<ThreadChatBloc>(context).add(
-                                          StarThread(widget.thread.info.id,
+                                          StarThread(widget.thread.info.threadOwnerId,
                                               !widget.thread.info.starred))
                                     }),
                             SizedBox(height: 5),
@@ -120,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     size: 24.0),
                                 onPressed: () => {
                                       BlocProvider.of<ThreadChatBloc>(context).add(
-                                          ArchiveThread(widget.thread.info.id,
+                                          ArchiveThread(widget.thread.info.threadOwnerId,
                                               !widget.thread.info.archived))
                                     }),
                             SizedBox(height: 5),
@@ -166,11 +166,8 @@ class _ChatScreenState extends State<ChatScreen> {
   postPressed(BuildContext context) {
     if (_validateAndSave()) {
       BlocProvider.of<ThreadChatBloc>(context).add(AddThreadMessage(
-          widget.thread.info.id,
-          SupportMessage(
-              authorId: "0",
-              contents: _newMessageController.text,
-              time: DateTime.now())));
+          widget.thread.info.threadOwnerId,
+          _newMessageController.text));
 
       _newMessageController.text = "";
     }

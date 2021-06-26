@@ -2,8 +2,7 @@ const kAdminUserId = "0";
 
 class SupportThreadInfo {
   SupportThreadInfo(
-      {this.id,
-      this.project,
+      {this.project,
       this.threadOwnerId,
       this.receiverId,
       this.starred,
@@ -16,7 +15,6 @@ class SupportThreadInfo {
 
   SupportThreadInfo.clone(SupportThreadInfo ticketInfo)
       : this(
-            id: ticketInfo.id,
             project: ticketInfo.project,
             threadOwnerId: ticketInfo.threadOwnerId,
             receiverId: ticketInfo.receiverId,
@@ -29,8 +27,7 @@ class SupportThreadInfo {
             contentsId: ticketInfo.contentsId);
 
   SupportThreadInfo copy(
-          {String id,
-          String projectId,
+          {String projectId,
           String threadOwnerId,
           String receiverId,
           bool starred,
@@ -41,7 +38,6 @@ class SupportThreadInfo {
           String preview,
           String contentsId}) =>
       SupportThreadInfo(
-        id: id ?? this.id,
         project: projectId ?? this.project,
         threadOwnerId: threadOwnerId ?? this.threadOwnerId,
         receiverId: receiverId ?? this.receiverId,
@@ -54,7 +50,6 @@ class SupportThreadInfo {
         contentsId: contentsId ?? this.contentsId,
       );
 
-  final String id;
   final String project;
   final String threadOwnerId;
   final String receiverId;
@@ -68,7 +63,6 @@ class SupportThreadInfo {
 
   factory SupportThreadInfo.fromJson(Map<String, dynamic> json) {
     return SupportThreadInfo(
-        id: json['id'],
         project: json['project'],
         threadOwnerId: json['threadOwnerId'],
         receiverId: json['receiverId'],
@@ -82,7 +76,6 @@ class SupportThreadInfo {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
         'project': project,
         'threadOwnerId': threadOwnerId,
         'receiverId': receiverId,
@@ -138,11 +131,10 @@ class SupportMessage {
 
   factory SupportMessage.fromJson(Map<String, dynamic> json) {
     return SupportMessage(
-      authorId: json['authorId'],
-      contents: json['contents'],
-      time: DateTime.fromMicrosecondsSinceEpoch(json['time']),
-      read: json['read']
-    );
+        authorId: json['authorId'],
+        contents: json['contents'],
+        time: DateTime.fromMicrosecondsSinceEpoch(json['time']),
+        read: json['read']);
   }
 
   Map<String, dynamic> toJson() => {

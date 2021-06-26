@@ -67,23 +67,23 @@ class ThreadChatBloc extends Bloc<ThreadChatEvent, ThreadChatState> {
   Stream<ThreadChatState> _mapAddThreadMessageToState(
       AddThreadMessage event) async* {
     var thread = await supportRepository.addThreadMessage(
-        event.threadId, event.message.authorId, event.message.contents);
+        event.threadOwnerId, event.message);
     add(ThreadUpdated(thread));
   }
 
   Stream<ThreadChatState> _mapArchiveThreadToState(ArchiveThread event) async* {
-    var thread = await supportRepository.archive(event.threadId, event.archive);
+    var thread = await supportRepository.archive(event.threadOwnerId, event.archive);
     add(ThreadInfoUpdated(thread));
   }
 
   Stream<ThreadChatState> _mapStarThreadToState(StarThread event) async* {
-    var thread = await supportRepository.star(event.threadId, event.star);
+    var thread = await supportRepository.star(event.threadOwnerId, event.star);
     add(ThreadInfoUpdated(thread));
   }
 
   Stream<ThreadChatState> _mapMarkThreadReadToState(
       MarkThreadRead event) async* {
-    var thread = await supportRepository.markRead(event.threadId, event.read);
+    var thread = await supportRepository.markRead(event.threadOwnerId, event.read);
     add(ThreadInfoUpdated(thread));
   }
 }
@@ -105,43 +105,43 @@ class LoadThread extends ThreadChatEvent {
 }
 
 class AddThreadMessage extends ThreadChatEvent {
-  final String threadId;
-  final SupportMessage message;
+  final String threadOwnerId;
+  final String message;
 
-  AddThreadMessage(this.threadId, this.message);
+  AddThreadMessage(this.threadOwnerId, this.message);
 
   @override
-  List<Object> get props => [threadId, message];
+  List<Object> get props => [threadOwnerId, message];
 }
 
 class ArchiveThread extends ThreadChatEvent {
-  final String threadId;
+  final String threadOwnerId;
   final bool archive;
 
-  ArchiveThread(this.threadId, this.archive);
+  ArchiveThread(this.threadOwnerId, this.archive);
 
   @override
-  List<Object> get props => [threadId, archive];
+  List<Object> get props => [threadOwnerId, archive];
 }
 
 class StarThread extends ThreadChatEvent {
-  final String threadId;
+  final String threadOwnerId;
   final bool star;
 
-  StarThread(this.threadId, this.star);
+  StarThread(this.threadOwnerId, this.star);
 
   @override
-  List<Object> get props => [threadId, star];
+  List<Object> get props => [threadOwnerId, star];
 }
 
 class MarkThreadRead extends ThreadChatEvent {
-  final String threadId;
+  final String threadOwnerId;
   final bool read;
 
-  MarkThreadRead(this.threadId, this.read);
+  MarkThreadRead(this.threadOwnerId, this.read);
 
   @override
-  List<Object> get props => [threadId, read];
+  List<Object> get props => [threadOwnerId, read];
 }
 
 class ThreadUpdated extends ThreadChatEvent {

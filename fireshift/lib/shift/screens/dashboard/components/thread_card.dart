@@ -25,7 +25,7 @@ class SupportThreadInfoCard extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: InkWell(
-          onTap: () => onNavigateToChatScreen(context, threadInfo.id),
+          onTap: () => onNavigateToChatScreen(context, threadInfo.threadOwnerId),
           child: Container(
             height: 135,
             padding: EdgeInsets.all(25.0),

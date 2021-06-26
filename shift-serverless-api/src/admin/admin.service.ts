@@ -9,7 +9,6 @@ import {
 } from '../shared/models/support-thread-info.model';
 import { SupportThread } from '../shared/models/support-thread.model';
 import {
-  SupportThreadContents,
   SupportThreadContentsModel,
 } from '../shared/models/support_thread_contents.model';
 
@@ -54,13 +53,13 @@ export class AdminService {
     });
 
     if (!foundThreadInfo) {
-      throw new Error("Error finding thread");
+      throw new Error("Error finding thread: " + id);
     }
 
     const foundContents = await this.contentsModel.findOne({ _id: foundThreadInfo.contentsId });
 
     if (!foundContents) {
-      throw new Error("Unable to find thread contents");
+      throw new Error("Unable to find thread contents of " + id);
     }
 
     return new SupportThread({
@@ -75,7 +74,7 @@ export class AdminService {
     });
 
     if (!foundThreadInfo) {
-      throw new Error("Error finding thread");
+      throw new Error("Error finding thread: " + id);
     }
 
     return foundThreadInfo;
@@ -87,7 +86,7 @@ export class AdminService {
     });
 
     if (!foundThreadInfo) {
-      throw new Error("Error finding thread");
+      throw new Error("Error finding thread: " + id);
     }
 
     await this.infoModel.updateOne(

@@ -20,14 +20,13 @@ class MockSupportRepository extends SupportRepository {
   }
 
   @override
-  Future<SupportThread> addThreadMessage(
-      String id, String threadOwnerId, String response) async {
+  Future<SupportThread> addThreadMessage(String threadOwnerId, String response) async {
     await fakeDelay();
 
-    var thread = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.threadOwnerId == threadOwnerId);
 
     if (thread == null) {
-      throw ('Unable to find thread with id $id');
+      throw ('Unable to find thread with id $threadOwnerId');
     }
 
     var newThread = SupportThread.clone(thread);
@@ -44,7 +43,7 @@ class MockSupportRepository extends SupportRepository {
   Future<SupportThreadInfo> archive(String id, bool archive) async {
     await fakeDelay();
 
-    var thread = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.threadOwnerId == id);
 
     var info = thread.info.copy(archived: archive);
 
@@ -92,7 +91,7 @@ class MockSupportRepository extends SupportRepository {
   Future<SupportThread> fetchThread(String ticketId) async {
     await fakeDelay();
 
-    var ticket = threads.firstWhere((x) => x.info.id == ticketId);
+    var ticket = threads.firstWhere((x) => x.info.threadOwnerId == ticketId);
     return Future.value(ticket);
   }
 
@@ -100,7 +99,7 @@ class MockSupportRepository extends SupportRepository {
   Future<SupportThreadInfo> markRead(String id, bool read) async {
     await fakeDelay();
 
-    var thread = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.threadOwnerId == id);
 
     var info = thread.info.copy(unread: !read);
 
@@ -116,7 +115,7 @@ class MockSupportRepository extends SupportRepository {
   Future<SupportThreadInfo> star(String id, bool star) async {
     await fakeDelay();
 
-    var thread = threads.firstWhere((x) => x.info.id == id);
+    var thread = threads.firstWhere((x) => x.info.threadOwnerId == id);
 
     var info = thread.info.copy(starred: star);
 
@@ -135,9 +134,8 @@ class MockSupportRepository extends SupportRepository {
 
 SupportThreadInfo createMockSupportThreadInfo(String projectId, int id) {
   return SupportThreadInfo(
-      id: id.toString(),
       project: projectId,
-      threadOwnerId: 'User ' + id.toString(),
+      threadOwnerId: id.toString(),
       receiverId: 'Support',
       starred: RandomUtilities.hit(0.5),
       unread: RandomUtilities.hit(0.85),
