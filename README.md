@@ -1,12 +1,20 @@
-# A simple tool for users support
+# Flutter + Nest.js AWS Lambda + mongoDB (Mongoose) basic functionality tool for getting user feedback
 
 The tool can be used to exchange messages with users in your applications. For example, to support users and/or collect feedback in the early stages of development.
 
-![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
+Admin part uses Flutter. API uses Nest.js & AWS Lambda + mongoDB (Mongoose). Something like MEFN (solution stack).
 
-Admin part uses Flutter. API uses Nest.js & AWS Lambda.
+## Setup
 
-## Nest.js AWS Lambda Setup
+#### Flutter
+
+Flutter client and admin apps designed for Web but can be run on other platforms as well.  
+See official [instructions](https://flutter.dev/docs/development/tools/android-studio) on how to run them.
+
+#### Setup Mongo database
+Any Mongo hosting is fine but for ease of use you can set up the [MongoDB Atlas](https://www.mongodb.com/) Free Tier.
+
+### Nest.js AWS Lambda Setup
 
 ### Setup pre-requisites:
 * [Node.js](https://nodejs.org/en/)
@@ -40,7 +48,7 @@ npm install --save-dev serverless-plugin-optimize
 npm install --save-dev serverless-offline plugin
 npm install --save-dev serverless
 ```
-* Install mongose & dotenv dependencies
+* Install mongoose & dotenv dependencies
 ```text
 npm install --save mongoose
 npm install --save dotenv
@@ -51,8 +59,6 @@ npm install --save dotenv
 MONGO_URI="mongodb+srv://[login]:[password]@[url]/[dbname]?retryWrites=true&w=majority"
  ```
 * Set "Incremental" to false in tsconfig.json
-#### Setup Mongo database
-Any Mongo hosting is fine but for ease of use you can set up the [MongoDB Atlas](https://www.mongodb.com/) Free Tier.
 #### Run
 * local
 ```text
