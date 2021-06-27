@@ -1,8 +1,20 @@
 # Flutter + Nest.js AWS Lambda + mongoDB (Mongoose) basic functionality tool for getting user feedback
 
-The tool can be used to exchange messages with users in your applications. For example, to support users and/or collect feedback in the early stages of development.
+The tool can be used to exchange messages with users in your applications. For example, to provide user support and/or collect feedback in the early stages of development.
+Admin part uses Flutter (with Bloc). API uses Nest.js & AWS Lambda + mongoDB (Mongoose). Something like MEFN (solution stack).
 
-Admin part uses Flutter. API uses Nest.js & AWS Lambda + mongoDB (Mongoose). Something like MEFN (solution stack).
+### Project
+
+    .
+    ├── fireshift             # Flutter admin app
+    ├── clients               # Examples of how to use API within your client apps
+    ├── shift-serverless-api  # Lambda backend API
+    ├── LICENSE
+    └── README.md
+
+List if chats            |  Single Chat
+:-------------------------:|:-------------------------:
+![image](screenshots/list.png)  |  ![image](screenshots/chat.png)
 
 ## Setup
 
