@@ -6,6 +6,7 @@ import 'package:flutter_client/client/app.dart';
 import 'package:flutter_client/client/screens/pre_chat_screen.dart';
 import 'package:flutter_client/client/support_request_repository.dart';
 import 'package:flutter_client/client/utilities.dart';
+import 'package:proviso/proviso.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -61,8 +62,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             SizedBox(height: 10),
                             Align(
                               alignment: Alignment.center,
-                              child: ConditionalWidget(
-                                  child: _loginButton(context, textTheme, colorScheme),
+                              child: ConditionWidget(
+                                  widget: _loginButton(context, textTheme, colorScheme),
                                   condition: buttonEnabled),
                             )
                           ],

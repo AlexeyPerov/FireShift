@@ -7,6 +7,7 @@ import 'package:flutter_client/client/app.dart';
 import 'package:flutter_client/client/screens/auth_screen.dart';
 import 'package:flutter_client/client/support_bloc.dart';
 import 'package:flutter_client/client/support_request_repository.dart';
+import 'package:proviso/proviso.dart';
 
 import '../utilities.dart';
 
@@ -185,9 +186,9 @@ class SupportMessageCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: ConditionalWidget(
+                        child: ConditionWidget(
                           condition: message.authorId != "0",
-                          child: Text("User " + message.authorId,
+                          widget: Text("User " + message.authorId,
                               style: textTheme.subtitle1
                                   .apply(color: colorScheme.onSurface)),
                         ),
