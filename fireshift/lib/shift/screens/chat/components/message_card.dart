@@ -1,8 +1,8 @@
 import 'package:fireshift/platform/utilities/formatters.dart';
-import 'package:fireshift/platform/widgets/conditional_widget.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proviso/proviso.dart';
 
 class SupportMessageCard extends StatelessWidget {
   final SupportMessage message;
@@ -44,9 +44,9 @@ class SupportMessageCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: ConditionalWidget(
+                        child: ConditionWidget(
                           condition: message.authorId != kAdminUserId,
-                          child: Text("User " + message.authorId,
+                          widget: Text("User " + message.authorId,
                               style: textTheme.subtitle1
                                   .apply(color: colorScheme.onSurface)),
                         ),

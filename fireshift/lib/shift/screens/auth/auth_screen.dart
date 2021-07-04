@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:fireshift/platform/utilities/navigator.dart';
-import 'package:fireshift/platform/widgets/conditional_widget.dart';
 import 'package:fireshift/shift/app/app.dart';
 import 'package:fireshift/shift/app/theme/theme_constants.dart';
 import 'package:fireshift/shift/repositories/auth/auth_repository.dart';
@@ -9,6 +8,7 @@ import 'package:fireshift/shift/screens/dashboard/dashboard_screen.dart';
 import 'package:fireshift/shift/screens/error/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proviso/proviso.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -71,8 +71,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: _passwordController),
                     Align(
                       alignment: Alignment.center,
-                      child: ConditionalWidget(
-                          child: _loginButton(context, textTheme, colorScheme),
+                      child: ConditionWidget(
+                          widget: _loginButton(context, textTheme, colorScheme),
                           condition: buttonEnabled),
                     )
                   ],

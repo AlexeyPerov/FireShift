@@ -1,8 +1,8 @@
 import 'package:fireshift/platform/utilities/formatters.dart';
-import 'package:fireshift/platform/widgets/conditional_widget.dart';
 import 'package:fireshift/shift/entities/support_thread.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proviso/proviso.dart';
 
 class SupportThreadInfoCard extends StatelessWidget {
   final SupportThreadInfo threadInfo;
@@ -47,16 +47,16 @@ class SupportThreadInfoCard extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Text(threadInfo.project, style: textTheme.headline6),
                     ),
-                    ConditionalWidget(
+                    ConditionWidget(
                       condition: threadInfo.starred,
-                      child: Icon(
+                      widget: Icon(
                         Icons.favorite,
                         size: 24.0
                       ),
                     ),
-                    ConditionalWidget(
+                    ConditionWidget(
                       condition: threadInfo.unread,
-                      child: Padding(
+                      widget: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Icon(
                             Icons.chat,
@@ -65,9 +65,9 @@ class SupportThreadInfoCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ConditionalWidget(
+                    ConditionWidget(
                       condition: threadInfo.archived,
-                      child: Padding(
+                      widget: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Icon(
                           Icons.archive,
